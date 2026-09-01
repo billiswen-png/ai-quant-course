@@ -1,0 +1,24 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { courseDays } from "../../data/course";
+---
+
+<BaseLayout title="每週教材｜AI 量化交易" active="weeks">
+  <header class="page-hero">
+    <div class="container">
+      <h1>每週教材</h1>
+      <p>依照課程進度查看學習目標、課堂安排、實作任務與成果要求。</p>
+    </div>
+  </header>
+  <section class="section">
+    <div class="container week-index">
+      {courseDays.map((item) => (
+        <a class="week-link" href={`/weeks/${item.slug}/`}>
+          <span class="day-label">Day {item.day}</span>
+          <span><h2>{item.title}</h2><p>{item.summary}</p></span>
+          <span class="arrow" aria-hidden="true">→</span>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
