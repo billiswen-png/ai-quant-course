@@ -2,20 +2,22 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import FlowDiagram from "../components/FlowDiagram.astro";
 import FinalPresentation from "../components/FinalPresentation.astro";
-import { assessment, courseWeeks, learningRhythm } from "../data/course";
+import ClassSchedule from "../components/ClassSchedule.astro";
+import { assessment, classPeriods, courseWeeks, learningRhythm } from "../data/course";
 ---
 
 <BaseLayout title="課程地圖｜AI × 量化交易" active="map">
-  <header class="page-hero"><div class="container"><p class="page-kicker">第 9–15 週授課｜第 16 週成果發表</p><h1>課程地圖</h1><p>七週完成可驗證的 Paper Trading 原型，第八週進行修正後的正式成果發表。</p></div></header>
+  <header class="page-hero"><div class="container"><p class="page-kicker">第 9–15 週授課｜第 16 週成果發表</p><h1>課程地圖</h1><p>每週 14:20–17:20，共三堂課；七週完成 Paper Trading 原型，第八週正式成果發表。</p></div></header>
   <section class="section">
     <div class="container">
-      <FlowDiagram items={learningRhythm} label="每週固定學習節奏" />
+      <ClassSchedule />
+      <div class="map-rhythm"><h2>每週固定學習節奏</h2><FlowDiagram items={learningRhythm} label="每週固定學習節奏" /></div>
       <div class="timeline">
         {courseWeeks.map((item) => (
           <article class="timeline-row">
             <div class="timeline-title"><a class="timeline-day" href={`/weeks/${item.slug}/`}>第 {item.week} 週</a><div><small>校定第 {item.campusWeek} 週</small><h2>{item.title}</h2></div></div>
             <div class="lesson-list">
-              {item.lessons.map((lesson, index) => <div class="lesson-line"><span>第 {index + 1} 堂</span><p>{lesson.title}<small>{lesson.detail}・{lesson.minutes}分鐘</small></p></div>)}
+              {item.lessons.map((lesson, index) => <div class="lesson-line"><span>第 {index + 1} 堂</span><p>{lesson.title}<small>{classPeriods[index].time}・{lesson.detail}・{lesson.minutes}分鐘</small></p></div>)}
               <div class="deliverable-line"><strong>本週交付</strong><span>{item.groupDeliverable}</span></div>
             </div>
           </article>

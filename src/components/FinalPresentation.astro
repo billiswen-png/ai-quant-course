@@ -1,6 +1,6 @@
 ---
 import FlowDiagram from "./FlowDiagram.astro";
-import { finalPresentation } from "../data/course";
+import { classPeriods, finalPresentation } from "../data/course";
 interface Props { compact?: boolean }
 const { compact = false } = Astro.props;
 ---
@@ -10,6 +10,11 @@ const { compact = false } = Astro.props;
   <div class="final-copy">
     <h2 id="final-presentation-title">{finalPresentation.title}</h2>
     <p>{finalPresentation.summary}</p>
+    <div class="final-agenda">
+      {finalPresentation.lessons.map((lesson, index) => (
+        <div><span>{classPeriods[index].time}</span><strong>{lesson.title}</strong><small>{lesson.detail}</small></div>
+      ))}
+    </div>
     <FlowDiagram items={finalPresentation.steps} label="正式成果發表流程" compact />
   </div>
 </section>

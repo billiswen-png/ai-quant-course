@@ -1,7 +1,7 @@
 export type Lesson = { title: string; detail: string; minutes: number };
 export type CourseWeek = {
   slug: string; week: number; campusWeek: number; title: string; summary: string;
-  goals: string[]; concepts: string[]; lessons: [Lesson, Lesson]; flow: string[];
+  goals: string[]; concepts: string[]; lessons: [Lesson, Lesson, Lesson]; flow: string[];
   practice: string; individualEvidence: string; groupDeliverable: string; checkpoint: string; code?: string;
 };
 
@@ -13,8 +13,9 @@ export const courseWeeks: CourseWeek[] = [
     goals: ["理解程式交易系統的完整生命週期", "把市場觀察改寫成可驗證問題", "辨識研究、模擬與實際交易的邊界"],
     concepts: ["量化研究", "AI 協作", "系統架構", "金融邏輯"],
     lessons: [
-      { title: "程式交易、量化研究與 AI 協作", detail: "理論講解・案例拆解", minutes: 60 },
-      { title: "研究問題與系統地圖", detail: "教師示範・小組建模", minutes: 60 }
+      { title: "程式交易與量化系統全貌", detail: "理論講解・金融實務案例", minutes: 50 },
+      { title: "AI 協作與可驗證研究問題", detail: "教師示範・問題拆解", minutes: 50 },
+      { title: "研究問題畫布與系統地圖", detail: "個人實作・小組建模", minutes: 50 }
     ],
     flow: ["市場現象", "研究問題", "資料需求", "策略假設", "驗證證據"],
     practice: "選擇一個可觀察的市場現象，寫清楚對象、時間尺度、假設、所需資料及如何判定假設不成立。",
@@ -29,8 +30,9 @@ export const courseWeeks: CourseWeek[] = [
     goals: ["完成本機 Python 與 Jupyter 環境", "理解資料型別、函式與例外處理", "建立 AI 小步修改與驗證紀錄"],
     concepts: ["VS Code", "本機 Jupyter", "Python", "Git", "AI 驗證"],
     lessons: [
-      { title: "環境建立與專案骨架", detail: "安裝檢查・逐步實作", minutes: 60 },
-      { title: "程式閱讀、測試與 AI 小步協作", detail: "個人實作・同儕互查", minutes: 60 }
+      { title: "VS Code、本機 Jupyter 與 Git", detail: "環境檢查・專案建立", minutes: 50 },
+      { title: "Python 金融資料結構與函式", detail: "教師示範・個人實作", minutes: 50 },
+      { title: "AI 小步協作、程式閱讀與測試", detail: "錯誤診斷・同儕互查", minutes: 50 }
     ],
     flow: ["定義輸入", "請 AI 解釋", "小步修改", "執行測試", "保存證據"],
     practice: "讀入一份行情資料，完成欄位檢查、日期排序、重複值移除、報酬計算與錯誤處理。",
@@ -46,8 +48,9 @@ export const courseWeeks: CourseWeek[] = [
     goals: ["區分歷史資料、快照與串流行情", "理解 Shioaji、MDC 與 SOR 的角色邊界", "完成可測試的行情資料品質管線"],
     concepts: ["Tick／K棒", "Shioaji", "MDC行情", "SOR送單", "資料品質"],
     lessons: [
-      { title: "金融資料語意與 API 架構", detail: "架構圖解・報價示範", minutes: 60 },
-      { title: "清理、時間戳與品質檢查", detail: "資料實作・異常演練", minutes: 60 }
+      { title: "Tick、K棒與金融資料時間語意", detail: "圖文講解・欄位判讀", minutes: 50 },
+      { title: "Shioaji、MDC、SOR 與 API 架構", detail: "架構圖解・報價示範", minutes: 50 },
+      { title: "資料清理、品質檢查與模擬管線", detail: "小組實作・異常演練", minutes: 50 }
     ],
     flow: ["Shioaji／MDC行情", "欄位標準化", "時間與缺值檢查", "策略資料層", "模擬輸出"],
     practice: "以歷史或模擬行情完成報價接收、欄位對照、時間排序、缺值處理、重複資料移除與異常標記。",
@@ -63,8 +66,9 @@ export const courseWeeks: CourseWeek[] = [
     goals: ["理解 KD、MACD 與布林通道的計算邏輯", "定義進出場、部位與退出規則", "用測試案例檢查策略狀態"],
     concepts: ["技術指標", "訊號", "部位", "狀態機", "單元測試"],
     lessons: [
-      { title: "指標、訊號與策略規格", detail: "圖解推導・規則示範", minutes: 60 },
-      { title: "策略函式與狀態測試", detail: "AI協作・個人實作", minutes: 60 }
+      { title: "指標原理與訊號形成", detail: "KD・MACD・布林通道", minutes: 50 },
+      { title: "進出場、部位與狀態機", detail: "規格圖解・教師示範", minutes: 50 },
+      { title: "策略函式與邊界測試", detail: "AI協作・個人實作", minutes: 50 }
     ],
     flow: ["行情輸入", "指標計算", "訊號判定", "部位狀態", "風險退出"],
     practice: "把一個自然語言策略寫成輸入、參數、訊號、部位、退出及無效條件，再以人工案例測試。",
@@ -79,8 +83,9 @@ export const courseWeeks: CourseWeek[] = [
     goals: ["避免未來函數與資料偷看", "納入手續費、滑價及成交假設", "解讀報酬、勝率、Sharpe、MaxDD與PF"],
     concepts: ["資料切分", "成交模擬", "交易成本", "Sharpe", "MaxDD", "PF"],
     lessons: [
-      { title: "公平回測與成交模擬", detail: "時間序列・成本設定", minutes: 60 },
-      { title: "績效儀表板與結果解讀", detail: "指標比較・錯誤診斷", minutes: 60 }
+      { title: "時間序列切分與公平回測", detail: "未來函數・資料偷看", minutes: 50 },
+      { title: "成交模擬、滑價與交易成本", detail: "假設設定・情境比較", minutes: 50 },
+      { title: "績效儀表板與結果解讀", detail: "勝率・Sharpe・MaxDD・PF", minutes: 50 }
     ],
     flow: ["訓練／觀察區間", "訊號延遲", "成交與成本", "權益曲線", "績效風險"],
     practice: "比較未計成本、已計成本及不同滑價情境，分析策略績效差異與最主要的風險來源。",
@@ -95,8 +100,9 @@ export const courseWeeks: CourseWeek[] = [
     goals: ["完成交易紀錄與損益對帳", "進行樣本外、敏感度與壓力測試", "定義部位限制、停損與停機條件"],
     concepts: ["損益對帳", "樣本外", "敏感度", "壓力測試", "停機條件"],
     lessons: [
-      { title: "帳務邏輯與穩健性驗證", detail: "對帳示範・樣本外測試", minutes: 60 },
-      { title: "風險限制與策略修正", detail: "壓力情境・小組審查", minutes: 60 }
+      { title: "交易紀錄、部位與損益對帳", detail: "帳務邏輯・逐筆核對", minutes: 50 },
+      { title: "樣本外、敏感度與穩健性", detail: "驗證方法・過度最佳化", minutes: 50 },
+      { title: "壓力測試、風險限制與停機", detail: "失敗情境・小組審查", minutes: 50 }
     ],
     flow: ["交易紀錄", "損益對帳", "樣本外驗證", "壓力測試", "風控與停機"],
     practice: "針對資料中斷、延遲、極端滑價、連續虧損及部位異常建立測試，提出策略停機與復原規則。",
@@ -111,8 +117,9 @@ export const courseWeeks: CourseWeek[] = [
     goals: ["完成端到端 Paper Trading 原型", "以故障情境檢驗系統", "完成課堂版發表並整理修改項目"],
     concepts: ["系統整合", "Paper Trading", "紅隊測試", "原型發表", "修改清單"],
     lessons: [
-      { title: "Paper Trading 整合與紅隊測試", detail: "系統演練・交叉檢核", minutes: 60 },
-      { title: "成品完成與課堂版成果發表", detail: "原型展示・教師回饋", minutes: 60 }
+      { title: "Paper Trading 端到端系統整合", detail: "行情・策略・風控・模擬委託", minutes: 50 },
+      { title: "紅隊測試與最終驗收", detail: "故障演練・交叉檢核", minutes: 50 },
+      { title: "成品完成與課堂版成果發表", detail: "原型展示・教師回饋", minutes: 50 }
     ],
     flow: ["行情", "策略", "風控", "模擬委託", "紀錄與展示"],
     practice: "小組執行完整系統展示，接受同儕與教師提問，將問題依必要修正、說明補強與延伸功能分級。",
@@ -126,8 +133,21 @@ export const finalPresentation = {
   week: 8, campusWeek: 16, title: "成果發表",
   summary: "依第7週回饋完成修改、驗收與封版，進行正式成果發表。",
   steps: ["完成必要修正", "程式與文件驗收", "8分鐘正式發表", "教師與同儕提問", "提交個人學習證據"],
+  lessons: [
+    { title: "最終版本檢查與展示準備", detail: "檔案驗收・設備測試", minutes: 50 },
+    { title: "小組正式成果發表", detail: "8分鐘簡報・系統展示・提問", minutes: 50 },
+    { title: "講師回饋、同儕回饋與課程收束", detail: "成果評議・個人反思", minutes: 50 }
+  ] as [Lesson, Lesson, Lesson],
   deliverables: ["可重現 Notebook 或程式專案", "專案文件與執行說明", "策略與風險報告", "正式簡報", "個人貢獻與反思"]
 };
+
+export const classPeriods = [
+  { label: "第 1 堂", time: "14:20–15:10" },
+  { label: "第 2 堂", time: "15:20–16:10" },
+  { label: "第 3 堂", time: "16:20–17:10" }
+];
+
+export const weeklyClose = { label: "課堂驗收", time: "17:10–17:20", detail: "成果檢查、離場單與下週分工" };
 
 export const learningRhythm = ["概念圖解", "教師示範", "個人實作", "同儕檢查", "小組整合", "課堂驗收"];
 

@@ -1,0 +1,12 @@
+---
+import { classPeriods, weeklyClose } from "../data/course";
+interface Props { compact?: boolean }
+const { compact = false } = Astro.props;
+---
+
+<div class:list={["class-schedule", { "schedule-compact": compact }]} aria-label="每週上課時間">
+  {classPeriods.map((period) => (
+    <div class="schedule-period"><span>{period.label}</span><strong>{period.time}</strong><small>50 分鐘</small></div>
+  ))}
+  <div class="schedule-period schedule-close"><span>{weeklyClose.label}</span><strong>{weeklyClose.time}</strong><small>{weeklyClose.detail}</small></div>
+</div>

@@ -3,7 +3,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import ArrowIcon from "../../components/ArrowIcon.astro";
 import FlowDiagram from "../../components/FlowDiagram.astro";
 import FinalPresentation from "../../components/FinalPresentation.astro";
-import { courseWeeks, type CourseWeek } from "../../data/course";
+import ClassSchedule from "../../components/ClassSchedule.astro";
+import { classPeriods, courseWeeks, type CourseWeek } from "../../data/course";
 
 export function getStaticPaths() {
   return courseWeeks.flatMap((item) => [
@@ -24,12 +25,13 @@ const next = courseWeeks.find((week) => week.week === item.week + 1);
     <article class="lesson-main">
       <p class="page-kicker">第 {item.week} 週｜校定第 {item.campusWeek} 週</p>
       <h1>{item.title}</h1><p class="lesson-summary">{item.summary}</p>
-      <div class="lesson-meta"><span>2 堂課</span><span>約 120 分鐘</span><span>個人實作＋小組整合</span></div>
+      <div class="lesson-meta"><span>3 堂課</span><span>14:20–17:20</span><span>150分鐘教學＋10分鐘驗收</span></div>
+      <ClassSchedule compact />
 
       <section class="content-section"><h2>這一週會完成什麼</h2><ul class="goal-list">{item.goals.map((goal) => <li>{goal}</li>)}</ul></section>
       <section class="content-section"><h2>核心概念</h2><div class="concept-rail">{item.concepts.map((concept, index) => <div><span>{String(index + 1).padStart(2, "0")}</span><strong>{concept}</strong></div>)}</div></section>
       <section class="content-section"><h2>系統流程圖</h2><FlowDiagram items={item.flow} label={`${item.title}流程`} /></section>
-      <section class="content-section"><h2>兩堂課安排</h2><div class="agenda">{item.lessons.map((lesson, index) => <div class="agenda-row"><div class="agenda-title"><strong>第 {index + 1} 堂</strong>{lesson.title}</div><div class="agenda-detail">{lesson.detail}<small>{lesson.minutes} 分鐘</small></div></div>)}</div></section>
+      <section class="content-section"><h2>三堂課安排</h2><div class="agenda">{item.lessons.map((lesson, index) => <div class="agenda-row"><div class="agenda-title"><strong>第 {index + 1} 堂｜{classPeriods[index].time}</strong>{lesson.title}</div><div class="agenda-detail">{lesson.detail}<small>{lesson.minutes} 分鐘</small></div></div>)}</div></section>
       <section class="content-section"><h2>課堂實作與學習證據</h2><div class="evidence-grid"><article><span>實作任務</span><p>{item.practice}</p></article><article><span>個人證據</span><p>{item.individualEvidence}</p></article><article><span>小組交付</span><p>{item.groupDeliverable}</p></article></div>{item.code && <pre class="code-block"><code>{item.code}</code></pre>}</section>
       <aside class="checkpoint"><strong>本週驗收標準</strong><p>{item.checkpoint}</p></aside>
       {next ? <a class="next-unit" href={`/weeks/${next.slug}/`}><span>下一週：{next.title}</span><ArrowIcon /></a> : <div class="week-seven-final"><FinalPresentation compact /></div>}
