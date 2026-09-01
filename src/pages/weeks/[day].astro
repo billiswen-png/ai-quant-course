@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import ArrowIcon from "../../components/ArrowIcon.astro";
 import { courseDays, type CourseDay } from "../../data/course";
 
 export function getStaticPaths() {
@@ -45,16 +46,16 @@ const next = courseDays.find((day) => day.day === item.day + 1);
       </section>
 
       {next ? (
-        <a class="next-unit" href={`/weeks/${next.slug}/`}><span>下一單元：Day {next.day} {next.title}</span><span aria-hidden="true">→</span></a>
+        <a class="next-unit" href={`/weeks/${next.slug}/`}><span>下一單元：Day {next.day} {next.title}</span><ArrowIcon /></a>
       ) : (
-        <a class="next-unit" href="/assignments/"><span>完成課程：查看期末專題規範</span><span aria-hidden="true">→</span></a>
+        <a class="next-unit" href="/assignments/"><span>完成課程：查看期末專題規範</span><ArrowIcon /></a>
       )}
     </article>
     <aside class="resource-rail" aria-label="學習資源">
       <h2>學習資源</h2>
-      <a class="resource-link" href="/resources/"><span>查看課前準備</span><span>→</span></a>
-      <a class="resource-link" href="/resources/#code"><span>開啟程式範例</span><span>→</span></a>
-      <a class="resource-link" href="/assignments/"><span>查看作業說明</span><span>→</span></a>
+      <a class="resource-link" href="/resources/"><span>查看課前準備</span><ArrowIcon size={19} /></a>
+      <a class="resource-link" href="/resources/#code"><span>開啟程式範例</span><ArrowIcon size={19} /></a>
+      <a class="resource-link" href="/assignments/"><span>查看作業說明</span><ArrowIcon size={19} /></a>
     </aside>
   </div>
 </BaseLayout>
