@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import ArrowIcon from "../../components/ArrowIcon.astro";
 import { courseDays } from "../../data/course";
 ---
 
@@ -16,7 +17,7 @@ import { courseDays } from "../../data/course";
         <a class="week-link" href={`/weeks/${item.slug}/`}>
           <span class="day-label">Day {item.day}</span>
           <span><h2>{item.title}</h2><p>{item.summary}</p></span>
-          <span class="arrow" aria-hidden="true">→</span>
+          <span class="arrow"><ArrowIcon /></span>
         </a>
       ))}
     </div>
