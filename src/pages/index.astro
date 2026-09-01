@@ -1,0 +1,49 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import DataGraphic from "../components/DataGraphic.astro";
+---
+
+<BaseLayout title="AI 量化交易｜師大研究所系列課程" active="home">
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="hero-copy">
+        <h1>從零開始，<br />把市場想法變成可驗證的量化策略</h1>
+        <p class="hero-lead">以 AI、Python、API 與金融實務為主軸，完成資料處理、策略設計、回測評估與小組成果發表。</p>
+        <div class="hero-meta">
+          <span><i class="meta-dot"></i>温秉豐｜金融市場服務顧問</span>
+          <span><i class="meta-dot"></i>6–7 天・每天 2 堂・研究所實作課程</span>
+        </div>
+        <a class="button-primary" href="/course-map/">查看課程地圖</a>
+      </div>
+      <DataGraphic />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="section-heading">一條從觀念到成果的學習路徑</h2>
+      <p class="section-intro">不是從複雜模型開始，而是先把問題說清楚，再用資料與程式逐步驗證。</p>
+      <div class="learning-path">
+        <article class="path-step">
+          <span class="path-number">01</span><h3>理解市場與量化</h3><p>建立金融市場、量化研究與風險溝通的核心觀念。</p>
+        </article>
+        <article class="path-step">
+          <span class="path-number">02</span><h3>取得與整理資料</h3><p>從 Python 到 API，完成可供策略使用的資料處理流程。</p>
+        </article>
+        <article class="path-step">
+          <span class="path-number">03</span><h3>建立與驗證策略</h3><p>把市場想法變成規則，進行回測、成本與風險檢驗。</p>
+        </article>
+        <article class="path-step">
+          <span class="path-number">04</span><h3>小組成果發表</h3><p>整合研究成果，清楚說明證據、限制與下一步。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="course-note">
+    <div class="container course-note-inner">
+      <div><h2>準備好開始第一天了嗎？</h2><p>先從一個可觀察、可取得資料、可驗證的市場問題開始。</p></div>
+      <a class="button-secondary" href="/weeks/day-1/">開始學習 Day 1</a>
+    </div>
+  </section>
+</BaseLayout>
