@@ -16,7 +16,7 @@ const navItems = [
   <div class="header-inner">
     <a class="brand" href="/" aria-label="回到課程首頁">
       <span class="brand-mark" aria-hidden="true">AI</span>
-      <span>量化交易<span class="brand-divider">｜</span>師大研究所系列課程</span>
+      <span>AI × 量化交易<span class="brand-divider">｜</span>師大研究所課程</span>
     </a>
     <button class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav">
       <span class="sr-only">開啟選單</span>
@@ -26,7 +26,7 @@ const navItems = [
       {navItems.map((item) => (
         <a href={item.href} aria-current={active === item.key ? "page" : undefined}>{item.label}</a>
       ))}
-      <a class="nav-cta" href="/weeks/day-1/">開始學習</a>
+      <a class="nav-cta" href="/weeks/week-1/">開始學習</a>
     </nav>
   </div>
 </header>

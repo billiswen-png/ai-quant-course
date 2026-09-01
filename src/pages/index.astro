@@ -1,49 +1,74 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import DataGraphic from "../components/DataGraphic.astro";
+import FlowDiagram from "../components/FlowDiagram.astro";
+import FinalPresentation from "../components/FinalPresentation.astro";
+import { courseWeeks, learningRhythm } from "../data/course";
 ---
 
-<BaseLayout title="AI 量化交易｜師大研究所系列課程" active="home">
-  <section class="hero">
+<BaseLayout title="AI × 量化交易｜師大研究所課程" active="home">
+  <section class="hero hero-redesign">
     <div class="container hero-inner">
       <div class="hero-copy">
-        <h1>從零開始，<br />把市場想法變成可驗證的量化策略</h1>
-        <p class="hero-lead">以 AI、Python、API 與金融實務為主軸，完成資料處理、策略設計、回測評估與小組成果發表。</p>
+        <h1>用 VS Code 與 AI，打造可驗證的程式交易系統</h1>
+        <p class="hero-lead">七週實作教學完成 Paper Trading 原型；第八週依回饋修正後，進行正式成果發表。</p>
         <div class="hero-meta">
-          <span><i class="meta-dot"></i>温秉豐｜金融市場服務顧問</span>
-          <span><i class="meta-dot"></i>6–7 天・每天 2 堂・研究所實作課程</span>
+          <span><i class="meta-dot"></i>講師：温秉豐｜永豐期貨營業部 資深副理</span>
+          <span><i class="meta-dot"></i>主環境：VS Code＋本機 Jupyter｜不使用 Colab</span>
+          <span><i class="meta-dot"></i>研究所課程｜每週 2 堂・每堂約 60 分鐘</span>
         </div>
-        <a class="button-primary" href="/course-map/">查看課程地圖</a>
+        <div class="hero-actions">
+          <a class="button-primary" href="/course-map/">查看完整課表</a>
+          <a class="button-secondary" href="/weeks/week-1/">開始第 1 週</a>
+        </div>
       </div>
-      <DataGraphic />
+      <figure class="hero-visual">
+        <img src="/images/ai-quant-course-hero.webp" alt="從本機程式開發、資料品質、策略風控到模擬交易的量化系統流程插圖" width="1280" height="702" />
+      </figure>
     </div>
   </section>
 
-  <section class="section">
+  <section class="section schedule-section">
     <div class="container">
-      <h2 class="section-heading">一條從觀念到成果的學習路徑</h2>
-      <p class="section-intro">不是從複雜模型開始，而是先把問題說清楚，再用資料與程式逐步驗證。</p>
-      <div class="learning-path">
-        <article class="path-step">
-          <span class="path-number">01</span><h3>理解市場與量化</h3><p>建立金融市場、量化研究與風險溝通的核心觀念。</p>
-        </article>
-        <article class="path-step">
-          <span class="path-number">02</span><h3>取得與整理資料</h3><p>從 Python 到 API，完成可供策略使用的資料處理流程。</p>
-        </article>
-        <article class="path-step">
-          <span class="path-number">03</span><h3>建立與驗證策略</h3><p>把市場想法變成規則，進行回測、成本與風險檢驗。</p>
-        </article>
-        <article class="path-step">
-          <span class="path-number">04</span><h3>小組成果發表</h3><p>整合研究成果，清楚說明證據、限制與下一步。</p>
-        </article>
+      <div class="section-split-heading">
+        <div><h2 class="section-heading">7 週授課，1 週正式發表</h2><p class="section-intro">第 7 週完成系統原型與課堂版發表，保留一週依教師及同儕回饋修改，第 8 週正式發表。</p></div>
+        <a class="text-link" href="/course-map/">展開每堂內容 →</a>
+      </div>
+      <div class="week-strip">
+        {courseWeeks.map((item) => (
+          <a class="week-card" href={`/weeks/${item.slug}/`}>
+            <span>第 {item.week} 週</span><strong>{item.title}</strong><small>交付：{item.groupDeliverable}</small>
+          </a>
+        ))}
+      </div>
+      <FinalPresentation compact />
+    </div>
+  </section>
+
+  <section class="section learning-section">
+    <div class="container">
+      <h2 class="section-heading">每週都走完一次學習循環</h2>
+      <p class="section-intro">先理解為什麼，再看教師怎麼做；個人先留下可檢核證據，小組再把成果整合成系統。</p>
+      <figure class="learning-visual"><img src="/images/learning-cycle.webp" alt="從概念說明、教師示範、個人實作、小組整合到課堂驗收的學習循環插圖" width="1500" height="640" loading="lazy" /></figure>
+      <FlowDiagram items={learningRhythm} label="每週學習流程" />
+    </div>
+  </section>
+
+  <section class="section architecture-section">
+    <div class="container">
+      <div class="architecture-copy"><h2 class="section-heading">從行情到 Paper Trading 的系統架構</h2><p>課程把行情、資料品質、策略、風控與模擬委託分層，讓每一個錯誤都能定位、每一項結果都能重現。</p></div>
+      <FlowDiagram items={["Shioaji／MDC 行情", "資料清理與品質檢查", "策略與風控引擎", "Paper Trading 模擬委託", "紀錄、對帳與報告"]} label="量化系統架構" />
+      <div class="architecture-notes">
+        <article><strong>行情與送單分開</strong><p>MDC／Shioaji負責行情情境；SOR／Shioaji為送單通道概念。課程以歷史、模擬或 Paper Trading 為主。</p></article>
+        <article><strong>AI 不能取代驗證</strong><p>所有 AI 產碼都要保留輸入、輸出、測試與修正紀錄，並由學生說明程式邏輯。</p></article>
+        <article><strong>先風控，再談績效</strong><p>納入交易成本、樣本外、壓力測試、對帳及停機規則，不以最佳化結果作為唯一證據。</p></article>
       </div>
     </div>
   </section>
 
   <section class="course-note">
     <div class="container course-note-inner">
-      <div><h2>準備好開始第一天了嗎？</h2><p>先從一個可觀察、可取得資料、可驗證的市場問題開始。</p></div>
-      <a class="button-secondary" href="/weeks/day-1/">開始學習 Day 1</a>
+      <div><h2>先從一個可被驗證、也可被否證的市場問題開始</h2><p>第 1 週會把市場觀察轉成研究問題、資料需求與系統地圖。</p></div>
+      <a class="button-secondary" href="/weeks/week-1/">進入第 1 週教材</a>
     </div>
   </section>
 </BaseLayout>

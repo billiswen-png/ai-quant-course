@@ -1,0 +1,15 @@
+---
+import FlowDiagram from "./FlowDiagram.astro";
+import { finalPresentation } from "../data/course";
+interface Props { compact?: boolean }
+const { compact = false } = Astro.props;
+---
+
+<section class:list={["final-presentation", { "final-compact": compact }]} aria-labelledby="final-presentation-title">
+  <div class="final-label">第 {finalPresentation.week} 週｜第 {finalPresentation.campusWeek} 週</div>
+  <div class="final-copy">
+    <h2 id="final-presentation-title">{finalPresentation.title}</h2>
+    <p>{finalPresentation.summary}</p>
+    <FlowDiagram items={finalPresentation.steps} label="正式成果發表流程" compact />
+  </div>
+</section>

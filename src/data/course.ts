@@ -1,119 +1,137 @@
-export type Lesson = {
-  title: string;
-  detail: string;
+export type Lesson = { title: string; detail: string; minutes: number };
+export type CourseWeek = {
+  slug: string; week: number; campusWeek: number; title: string; summary: string;
+  goals: string[]; concepts: string[]; lessons: [Lesson, Lesson]; flow: string[];
+  practice: string; individualEvidence: string; groupDeliverable: string; checkpoint: string; code?: string;
 };
 
-export type CourseDay = {
-  slug: string;
-  day: number;
-  title: string;
-  summary: string;
-  goals: string[];
-  lessons: [Lesson, Lesson];
-  practice: string;
-  deliverable: string;
-  code?: string;
-};
-
-export const courseDays: CourseDay[] = [
+export const courseWeeks: CourseWeek[] = [
   {
-    slug: "day-1",
-    day: 1,
-    title: "量化交易與金融市場問題",
-    summary: "先從金融問題與決策流程出發，建立程式交易、量化研究與 AI 協作的共同語言。",
-    goals: ["理解量化交易的核心流程", "把市場觀察轉成可檢驗問題", "辨識回測與實盤之間的差異"],
+    slug: "week-1", week: 1, campusWeek: 9,
+    title: "AI 時代的程式交易與量化系統概論",
+    summary: "從市場問題與系統邊界出發，建立 AI 協作、量化研究及風險溝通的共同語言。",
+    goals: ["理解程式交易系統的完整生命週期", "把市場觀察改寫成可驗證問題", "辨識研究、模擬與實際交易的邊界"],
+    concepts: ["量化研究", "AI 協作", "系統架構", "金融邏輯"],
     lessons: [
-      { title: "量化交易的核心概念與市場參與者", detail: "案例講授・觀念建立" },
-      { title: "市場問題拆解與研究流程建立", detail: "小組討論・問題定義" }
+      { title: "程式交易、量化研究與 AI 協作", detail: "理論講解・案例拆解", minutes: 60 },
+      { title: "研究問題與系統地圖", detail: "教師示範・小組建模", minutes: 60 }
     ],
-    practice: "小組選擇一個可觀察的市場現象，寫出研究問題、資料需求與驗證方式。",
-    deliverable: "一頁式研究問題畫布"
+    flow: ["市場現象", "研究問題", "資料需求", "策略假設", "驗證證據"],
+    practice: "選擇一個可觀察的市場現象，寫清楚對象、時間尺度、假設、所需資料及如何判定假設不成立。",
+    individualEvidence: "每人提交一項市場觀察，以及將觀察改寫成研究問題的紀錄。",
+    groupDeliverable: "研究問題畫布＋量化系統地圖",
+    checkpoint: "問題必須可取得資料、可被否證，且不以獲利保證作為研究目標。"
   },
   {
-    slug: "day-2",
-    day: 2,
-    title: "Python、AI 與資料處理",
-    summary: "用最少但足夠的 Python 基礎處理金融資料，並學會讓 AI 成為可驗證的程式協作夥伴。",
-    goals: ["理解 Python 資料結構", "完成 Pandas 資料處理", "建立 AI 產碼與檢核流程"],
+    slug: "week-2", week: 2, campusWeek: 10,
+    title: "VS Code × AI 協作：Python 量化開發入門",
+    summary: "在 VS Code 與本機 Jupyter 建立可重現專案，練習閱讀、測試及修正 AI 協作產生的程式。",
+    goals: ["完成本機 Python 與 Jupyter 環境", "理解資料型別、函式與例外處理", "建立 AI 小步修改與驗證紀錄"],
+    concepts: ["VS Code", "本機 Jupyter", "Python", "Git", "AI 驗證"],
     lessons: [
-      { title: "Python 基礎語法與金融資料結構", detail: "逐步實作・個別練習" },
-      { title: "Pandas 清理、轉換與視覺化", detail: "資料實作・小組互查" }
+      { title: "環境建立與專案骨架", detail: "安裝檢查・逐步實作", minutes: 60 },
+      { title: "程式閱讀、測試與 AI 小步協作", detail: "個人實作・同儕互查", minutes: 60 }
     ],
-    practice: "讀入一份行情資料，完成日期轉換、欄位整理、報酬計算與基礎視覺化。",
-    deliverable: "可重現的資料處理 Notebook",
-    code: `import pandas as pd\n\ndf = pd.read_csv("market_data.csv", parse_dates=["date"])\ndf = df.sort_values("date").drop_duplicates("date")\ndf["return"] = df["close"].pct_change()`
+    flow: ["定義輸入", "請 AI 解釋", "小步修改", "執行測試", "保存證據"],
+    practice: "讀入一份行情資料，完成欄位檢查、日期排序、重複值移除、報酬計算與錯誤處理。",
+    individualEvidence: "保留一組有效與一組失敗的 AI 指令，說明如何測試及修正。",
+    groupDeliverable: "可重現專案骨架＋README執行說明",
+    checkpoint: "組員能在另一台電腦依 README 重現結果；課程不使用 Colab。",
+    code: `import pandas as pd\n\ndf = pd.read_csv("market_data.csv", parse_dates=["timestamp"])\ndf = df.sort_values("timestamp").drop_duplicates("timestamp")\ndf["return"] = df["close"].pct_change()`
   },
   {
-    slug: "day-3",
-    day: 3,
-    title: "API 報價串接與資料品質",
-    summary: "把即時市場資料接進 Python，理解資料頻率、缺值、時間戳與流量限制。",
-    goals: ["辨識行情資料來源與欄位", "完成 API 報價接收流程", "建立資料品質檢查清單"],
+    slug: "week-3", week: 3, campusWeek: 11,
+    title: "金融資料、API 即時報價與資料工程",
+    summary: "認識 Tick、K棒與時間語意，將 API 行情接入一致的資料格式，建立品質檢查與模擬報價管線。",
+    goals: ["區分歷史資料、快照與串流行情", "理解 Shioaji、MDC 與 SOR 的角色邊界", "完成可測試的行情資料品質管線"],
+    concepts: ["Tick／K棒", "Shioaji", "MDC行情", "SOR送單", "資料品質"],
     lessons: [
-      { title: "金融資料來源與 API 串接實作", detail: "流程拆解・報價接收" },
-      { title: "資料清理、缺值處理與檢核方法", detail: "品質檢查・異常標記" }
+      { title: "金融資料語意與 API 架構", detail: "架構圖解・報價示範", minutes: 60 },
+      { title: "清理、時間戳與品質檢查", detail: "資料實作・異常演練", minutes: 60 }
     ],
-    practice: "小組完成即時報價接收、欄位整理與異常資料標記。",
-    deliverable: "行情資料品質檢查表",
+    flow: ["Shioaji／MDC行情", "欄位標準化", "時間與缺值檢查", "策略資料層", "模擬輸出"],
+    practice: "以歷史或模擬行情完成報價接收、欄位對照、時間排序、缺值處理、重複資料移除與異常標記。",
+    individualEvidence: "每人解釋一項資料品質問題，以及該問題可能造成的策略偏差。",
+    groupDeliverable: "資料字典＋模擬報價管線＋品質檢查表",
+    checkpoint: "行情來源、送單通道及測試資料必須清楚分層；不得將 API 金鑰提交到 Repository。",
     code: `def validate_quote(quote):\n    required = {"symbol", "timestamp", "price", "volume"}\n    missing = required - quote.keys()\n    return {"valid": not missing, "missing": sorted(missing)}`
   },
   {
-    slug: "day-4",
-    day: 4,
-    title: "技術指標與策略規則",
-    summary: "從指標原理走向明確規則，避免把圖形直覺誤當成可執行、可驗證的策略。",
-    goals: ["理解常用指標的計算邏輯", "定義進出場與部位規則", "避免未來函數與訊號偷看"],
+    slug: "week-4", week: 4, campusWeek: 12,
+    title: "AI 協作：建立第一個可執行交易策略",
+    summary: "把自然語言市場想法轉成明確的指標、訊號、部位與狀態機，避免把圖形直覺誤當策略。",
+    goals: ["理解 KD、MACD 與布林通道的計算邏輯", "定義進出場、部位與退出規則", "用測試案例檢查策略狀態"],
+    concepts: ["技術指標", "訊號", "部位", "狀態機", "單元測試"],
     lessons: [
-      { title: "常見技術指標原理與計算", detail: "KD・MACD・布林通道" },
-      { title: "策略規則設計與訊號產生", detail: "條件定義・邏輯測試" }
+      { title: "指標、訊號與策略規格", detail: "圖解推導・規則示範", minutes: 60 },
+      { title: "策略函式與狀態測試", detail: "AI協作・個人實作", minutes: 60 }
     ],
-    practice: "將一個自然語言策略改寫為明確的輸入、條件、訊號、部位與退出規則。",
-    deliverable: "策略規格表與訊號範例"
+    flow: ["行情輸入", "指標計算", "訊號判定", "部位狀態", "風險退出"],
+    practice: "把一個自然語言策略寫成輸入、參數、訊號、部位、退出及無效條件，再以人工案例測試。",
+    individualEvidence: "每人提交一個策略邊界案例與預期結果。",
+    groupDeliverable: "策略函式＋狀態測試＋策略規格表",
+    checkpoint: "不得使用未來資料；每個訊號都能追溯至明確資料與條件。"
   },
   {
-    slug: "day-5",
-    day: 5,
-    title: "回測、績效與風險評估",
-    summary: "用正確的時間序列流程評估策略，理解報酬、風險、成本與穩健性之間的關係。",
-    goals: ["建立基礎回測流程", "解讀 Sharpe、MaxDD 與 PF", "辨識過度最佳化風險"],
+    slug: "week-5", week: 5, campusWeek: 13,
+    title: "公平回測、成交模擬與績效評估",
+    summary: "建立正確的時間序列回測，納入成本與成交假設，從多項指標理解策略報酬、風險及限制。",
+    goals: ["避免未來函數與資料偷看", "納入手續費、滑價及成交假設", "解讀報酬、勝率、Sharpe、MaxDD與PF"],
+    concepts: ["資料切分", "成交模擬", "交易成本", "Sharpe", "MaxDD", "PF"],
     lessons: [
-      { title: "回測架構與交易模擬流程", detail: "資料切分・成本設定" },
-      { title: "績效指標解讀與風險評估", detail: "穩健性・敏感度分析" }
+      { title: "公平回測與成交模擬", detail: "時間序列・成本設定", minutes: 60 },
+      { title: "績效儀表板與結果解讀", detail: "指標比較・錯誤診斷", minutes: 60 }
     ],
-    practice: "比較含成本與不含成本的回測結果，並說明策略最主要的風險來源。",
-    deliverable: "績效摘要與風險說明"
+    flow: ["訓練／觀察區間", "訊號延遲", "成交與成本", "權益曲線", "績效風險"],
+    practice: "比較未計成本、已計成本及不同滑價情境，分析策略績效差異與最主要的風險來源。",
+    individualEvidence: "每人解釋一個績效指標不能單獨代表策略好壞的原因。",
+    groupDeliverable: "含成本回測＋績效儀表板＋結果說明",
+    checkpoint: "資料切分、價格採用時點、成本與未成交規則必須能被重現。"
   },
   {
-    slug: "day-6",
-    day: 6,
-    title: "即時行情、模擬交易與策略修正",
-    summary: "把研究流程帶到即時資料與模擬執行，檢查延遲、流量、狀態與例外處理。",
-    goals: ["建立即時行情處理流程", "理解模擬下單與狀態管理", "依觀察結果修正策略"],
+    slug: "week-6", week: 6, campusWeek: 14,
+    title: "策略穩健性、帳務邏輯與風險控管",
+    summary: "從損益對帳、樣本外驗證、壓力測試及停機條件，辨識過度最佳化並建立可執行的風控規格。",
+    goals: ["完成交易紀錄與損益對帳", "進行樣本外、敏感度與壓力測試", "定義部位限制、停損與停機條件"],
+    concepts: ["損益對帳", "樣本外", "敏感度", "壓力測試", "停機條件"],
     lessons: [
-      { title: "即時行情串接與資料流處理", detail: "訂閱・節流・狀態" },
-      { title: "模擬交易執行與策略修正", detail: "紀錄・例外・回顧" }
+      { title: "帳務邏輯與穩健性驗證", detail: "對帳示範・樣本外測試", minutes: 60 },
+      { title: "風險限制與策略修正", detail: "壓力情境・小組審查", minutes: 60 }
     ],
-    practice: "以模擬資料完成行情→策略→訊號→模擬委託→紀錄的完整流程。",
-    deliverable: "模擬交易紀錄與修正清單"
+    flow: ["交易紀錄", "損益對帳", "樣本外驗證", "壓力測試", "風控與停機"],
+    practice: "針對資料中斷、延遲、極端滑價、連續虧損及部位異常建立測試，提出策略停機與復原規則。",
+    individualEvidence: "每人負責一種失敗情境，記錄觸發條件、系統反應及修正方法。",
+    groupDeliverable: "風控清單＋對帳結果＋策略穩健性報告",
+    checkpoint: "先定義失敗與停機條件，再談績效；不得只挑選最佳參數結果。"
   },
   {
-    slug: "day-7",
-    day: 7,
-    title: "小組成果發表與實務回饋",
-    summary: "整合研究問題、資料、策略與驗證結果，清楚呈現限制、風險與下一步。",
-    goals: ["完成可重現的專題成果", "用證據說明策略優缺點", "回應同儕與講師提問"],
+    slug: "week-7", week: 7, campusWeek: 15,
+    title: "Paper Trading 系統整合與成果封版",
+    summary: "整合資料、訊號、風控與模擬委託，完成紅隊測試、課堂版發表及正式發表前的修正清單。",
+    goals: ["完成端到端 Paper Trading 原型", "以故障情境檢驗系統", "完成課堂版發表並整理修改項目"],
+    concepts: ["系統整合", "Paper Trading", "紅隊測試", "原型發表", "修改清單"],
     lessons: [
-      { title: "小組專題整合與簡報準備", detail: "成果整理・演練" },
-      { title: "成果發表與講師實務回饋", detail: "發表・同儕互評" }
+      { title: "Paper Trading 整合與紅隊測試", detail: "系統演練・交叉檢核", minutes: 60 },
+      { title: "成品完成與課堂版成果發表", detail: "原型展示・教師回饋", minutes: 60 }
     ],
-    practice: "完成小組口頭發表、程式展示與個人學習反思。",
-    deliverable: "期末專題簡報、程式與個人反思"
+    flow: ["行情", "策略", "風控", "模擬委託", "紀錄與展示"],
+    practice: "小組執行完整系統展示，接受同儕與教師提問，將問題依必要修正、說明補強與延伸功能分級。",
+    individualEvidence: "每人說明自己的貢獻、測試證據、發現的限制及下一步修正。",
+    groupDeliverable: "可執行系統原型＋課堂版簡報＋正式發表修改清單",
+    checkpoint: "本週完成原型與課堂版發表；後續保留一週修正，再進行第8週正式成果發表。"
   }
 ];
 
+export const finalPresentation = {
+  week: 8, campusWeek: 16, title: "成果發表",
+  summary: "依第7週回饋完成修改、驗收與封版，進行正式成果發表。",
+  steps: ["完成必要修正", "程式與文件驗收", "8分鐘正式發表", "教師與同儕提問", "提交個人學習證據"],
+  deliverables: ["可重現 Notebook 或程式專案", "專案文件與執行說明", "策略與風險報告", "正式簡報", "個人貢獻與反思"]
+};
+
+export const learningRhythm = ["概念圖解", "教師示範", "個人實作", "同儕檢查", "小組整合", "課堂驗收"];
+
 export const assessment = [
-  { label: "課堂練習", value: "20%" },
-  { label: "分組作業", value: "30%" },
-  { label: "個人反思", value: "10%" },
-  { label: "期末專題", value: "40%" }
+  { label: "課堂練習", value: "20%" }, { label: "分組作業", value: "30%" },
+  { label: "個人反思", value: "10%" }, { label: "期末專題", value: "40%" }
 ];

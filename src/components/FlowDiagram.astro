@@ -1,0 +1,13 @@
+---
+interface Props { items: string[]; label?: string; compact?: boolean }
+const { items, label = "流程圖", compact = false } = Astro.props;
+---
+
+<div class:list={["flow-diagram", { "flow-compact": compact }]} role="list" aria-label={label}>
+  {items.map((item, index) => (
+    <>
+      <div class="flow-node" role="listitem"><span>{String(index + 1).padStart(2, "0")}</span><strong>{item}</strong></div>
+      {index < items.length - 1 && <div class="flow-arrow" aria-hidden="true">→</div>}
+    </>
+  ))}
+</div>

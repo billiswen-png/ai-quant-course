@@ -3,7 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
 <BaseLayout title="資源中心｜AI 量化交易" active="resources">
-  <header class="page-hero"><div class="container"><h1>資源中心</h1><p>上課前完成環境準備；課堂中以可重現、可檢核的方式保存程式與研究紀錄。</p></div></header>
+  <header class="page-hero"><div class="container"><p class="page-kicker">本機開發・可重現研究</p><h1>資源中心</h1><p>上課前完成 VS Code 與本機 Jupyter 準備；全程不使用 Colab。</p></div></header>
   <section class="section">
     <div class="container prose-grid">
       <div>
@@ -13,23 +13,24 @@ import BaseLayout from "../layouts/BaseLayout.astro";
             <tbody>
               <tr><th>電腦環境</th><td>可安裝軟體的 Windows 或 macOS 筆電；建議預留足夠儲存空間。</td></tr>
               <tr><th>Python</th><td>Python 3.11 以上版本，搭配專案虛擬環境。</td></tr>
-              <tr><th>程式工具</th><td>Visual Studio Code、Git 與本機 Jupyter Notebook；本課程不依賴 Colab。</td></tr>
+              <tr><th>程式工具</th><td>Visual Studio Code、Git 與本機 Jupyter Notebook；本課程不使用 Colab。</td></tr>
               <tr><th>版本管理</th><td>GitHub 帳號及小組共用 Repository，用來保存程式、說明與修改紀錄。</td></tr>
-              <tr><th>資料與 API</th><td>課堂提供示範資料與串接流程；任何金鑰不得提交到公開 Repository。</td></tr>
+              <tr><th>資料與 API</th><td>以歷史資料、模擬行情及教學用API流程為主；任何金鑰不得提交到 Repository。</td></tr>
             </tbody>
           </table>
         </section>
-        <section class="content-block" id="code">
-          <h2>程式範例使用原則</h2>
+        <section class="content-block" id="method">
+          <h2>AI 協作與程式驗證</h2>
           <ul>
-            <li>先執行原始版本並確認輸入與輸出。</li><li>每次只修改一個條件，保留變更紀錄。</li>
-            <li>AI 產生的程式必須檢查資料欄位、時間順序、例外處理與輸出合理性。</li><li>報告中清楚說明資料、假設、成本、限制與無法驗證之處。</li>
+            <li>先寫清楚輸入、輸出、限制與驗收條件，再請AI協助。</li><li>每次只修改一個問題，保留指令、輸出、測試與修改紀錄。</li>
+            <li>檢查資料欄位、時間順序、未來函數、例外處理與輸出合理性。</li><li>學生必須能自行解釋程式；教師不以AI取代金融判斷與驗證。</li>
           </ul>
         </section>
+        <section class="content-block" id="api"><h2>API角色與教學邊界</h2><div class="api-table"><div><strong>Shioaji／MDC</strong><p>報價取得、快照與串流行情的教學情境。</p></div><div><strong>SOR／Shioaji</strong><p>送單、委託狀態與例外處理的架構概念。</p></div><div><strong>Paper Trading</strong><p>課程執行層；以模擬委託驗證策略與帳務。</p></div></div></section>
       </div>
       <aside class="side-panel">
         <h2>重要提醒</h2>
-        <p>課程的 API 與模擬交易內容用於教學。未經確認前，不要連接真實交易帳號或送出實際委託。</p>
+        <p>課程的 API 與模擬交易內容僅用於教學。課堂不連接真實交易帳號、不送出實際委託。</p>
         <p>大型影片與受授權限制的教材，將透過課堂指定平台提供。</p>
       </aside>
     </div>
