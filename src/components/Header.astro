@@ -1,0 +1,42 @@
+---
+interface Props {
+  active?: "home" | "map" | "weeks" | "assignments" | "resources";
+}
+const { active } = Astro.props;
+const navItems = [
+  { key: "home", label: "課程首頁", href: "/" },
+  { key: "map", label: "課程地圖", href: "/course-map/" },
+  { key: "weeks", label: "每週教材", href: "/weeks/" },
+  { key: "assignments", label: "作業與專題", href: "/assignments/" },
+  { key: "resources", label: "資源中心", href: "/resources/" }
+];
+---
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/" aria-label="回到課程首頁">
+      <span class="brand-mark" aria-hidden="true">AI</span>
+      <span>量化交易<span class="brand-divider">｜</span>師大研究所系列課程</span>
+    </a>
+    <button class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span class="sr-only">開啟選單</span>
+      <span></span><span></span><span></span>
+    </button>
+    <nav id="site-nav" class="site-nav" aria-label="主要導覽">
+      {navItems.map((item) => (
+        <a href={item.href} aria-current={active === item.key ? "page" : undefined}>{item.label}</a>
+      ))}
+      <a class="nav-cta" href="/weeks/day-1/">開始學習</a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>(".menu-button");
+  const nav = document.querySelector<HTMLElement>("#site-nav");
+  button?.addEventListener("click", () => {
+    const isOpen = button.getAttribute("aria-expanded") === "true";
+    button.setAttribute("aria-expanded", String(!isOpen));
+    nav?.classList.toggle("is-open", !isOpen);
+  });
+</script>
