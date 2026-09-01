@@ -1,8 +1,9 @@
 export type Lesson = { title: string; detail: string; minutes: number };
+export type CourseVisual = { src: string; alt: string; title: string; caption: string };
 export type CourseWeek = {
   slug: string; week: number; campusWeek: number; title: string; summary: string;
   goals: string[]; concepts: string[]; lessons: [Lesson, Lesson, Lesson]; flow: string[];
-  practice: string; individualEvidence: string; groupDeliverable: string; checkpoint: string; code?: string;
+  practice: string; individualEvidence: string; groupDeliverable: string; checkpoint: string; code?: string; visual?: CourseVisual;
 };
 
 export const courseWeeks: CourseWeek[] = [
@@ -18,6 +19,12 @@ export const courseWeeks: CourseWeek[] = [
       { title: "研究問題畫布與系統地圖", detail: "個人實作・小組建模", minutes: 50 }
     ],
     flow: ["市場現象", "研究問題", "資料需求", "策略假設", "驗證證據"],
+    visual: {
+      src: "/images/week-1-research-path.webp",
+      alt: "學生從觀察市場開始，依序整理資料、建立策略邏輯並檢視驗證證據的研究歷程插圖",
+      title: "把市場直覺變成可驗證問題",
+      caption: "先問一個能被資料回答、也可能被推翻的問題，再決定要寫什麼程式。"
+    },
     practice: "選擇一個可觀察的市場現象，寫清楚對象、時間尺度、假設、所需資料及如何判定假設不成立。",
     individualEvidence: "每人提交一項市場觀察，以及將觀察改寫成研究問題的紀錄。",
     groupDeliverable: "研究問題畫布＋量化系統地圖",
@@ -38,7 +45,7 @@ export const courseWeeks: CourseWeek[] = [
     practice: "讀入一份行情資料，完成欄位檢查、日期排序、重複值移除、報酬計算與錯誤處理。",
     individualEvidence: "保留一組有效與一組失敗的 AI 指令，說明如何測試及修正。",
     groupDeliverable: "可重現專案骨架＋README執行說明",
-    checkpoint: "組員能在另一台電腦依 README 重現結果；課程不使用 Colab。",
+    checkpoint: "組員能在另一台電腦依 README 重現結果，並說明每一個環境與套件需求。",
     code: `import pandas as pd\n\ndf = pd.read_csv("market_data.csv", parse_dates=["timestamp"])\ndf = df.sort_values("timestamp").drop_duplicates("timestamp")\ndf["return"] = df["close"].pct_change()`
   },
   {
@@ -53,6 +60,12 @@ export const courseWeeks: CourseWeek[] = [
       { title: "資料清理、品質檢查與模擬管線", detail: "小組實作・異常演練", minutes: 50 }
     ],
     flow: ["Shioaji／MDC行情", "欄位標準化", "時間與缺值檢查", "策略資料層", "模擬輸出"],
+    visual: {
+      src: "/images/week-3-data-pipeline.webp",
+      alt: "多種行情資料依序經過欄位標準化、時間與品質檢查、儲存及監控的資料管線插圖",
+      title: "讓行情先通過品質關卡",
+      caption: "策略看到資料之前，先統一欄位、確認時間、處理缺值與重複資料。"
+    },
     practice: "以歷史或模擬行情完成報價接收、欄位對照、時間排序、缺值處理、重複資料移除與異常標記。",
     individualEvidence: "每人解釋一項資料品質問題，以及該問題可能造成的策略偏差。",
     groupDeliverable: "資料字典＋模擬報價管線＋品質檢查表",
@@ -88,6 +101,12 @@ export const courseWeeks: CourseWeek[] = [
       { title: "績效儀表板與結果解讀", detail: "勝率・Sharpe・MaxDD・PF", minutes: 50 }
     ],
     flow: ["訓練／觀察區間", "訊號延遲", "成交與成本", "權益曲線", "績效風險"],
+    visual: {
+      src: "/images/week-5-backtest.webp",
+      alt: "行情經策略規則、部位狀態、時間切分與成本模擬後產出績效及回撤報告的回測流程插圖",
+      title: "策略要通過公平回測才能被解讀",
+      caption: "先固定時序與成交假設，再把成本放進去，最後同時閱讀報酬與風險。"
+    },
     practice: "比較未計成本、已計成本及不同滑價情境，分析策略績效差異與最主要的風險來源。",
     individualEvidence: "每人解釋一個績效指標不能單獨代表策略好壞的原因。",
     groupDeliverable: "含成本回測＋績效儀表板＋結果說明",
@@ -122,6 +141,12 @@ export const courseWeeks: CourseWeek[] = [
       { title: "成品完成與課堂版成果發表", detail: "原型展示・教師回饋", minutes: 50 }
     ],
     flow: ["行情", "策略", "風控", "模擬委託", "紀錄與展示"],
+    visual: {
+      src: "/images/week-7-paper-trading.webp",
+      alt: "交易紀錄經壓力測試、風險防護與模擬交易後，由學生共同檢視並發表的系統整合插圖",
+      title: "把研究成果變成可驗收的系統",
+      caption: "不是只展示曲線；還要能重播紀錄、觸發風控、說明限制並接受提問。"
+    },
     practice: "小組執行完整系統展示，接受同儕與教師提問，將問題依必要修正、說明補強與延伸功能分級。",
     individualEvidence: "每人說明自己的貢獻、測試證據、發現的限制及下一步修正。",
     groupDeliverable: "可執行系統原型＋課堂版簡報＋正式發表修改清單",

@@ -4,6 +4,7 @@ import ArrowIcon from "../../components/ArrowIcon.astro";
 import FlowDiagram from "../../components/FlowDiagram.astro";
 import FinalPresentation from "../../components/FinalPresentation.astro";
 import ClassSchedule from "../../components/ClassSchedule.astro";
+import LearningVisual from "../../components/LearningVisual.astro";
 import { classPeriods, courseWeeks, type CourseWeek } from "../../data/course";
 
 export function getStaticPaths() {
@@ -29,6 +30,7 @@ const next = courseWeeks.find((week) => week.week === item.week + 1);
       <ClassSchedule compact />
 
       <section class="content-section"><h2>這一週會完成什麼</h2><ul class="goal-list">{item.goals.map((goal) => <li>{goal}</li>)}</ul></section>
+      {item.visual && <section class="content-section visual-guide-section"><h2>先看懂這一週的路徑</h2><LearningVisual visual={item.visual} steps={item.flow} /></section>}
       <section class="content-section"><h2>核心概念</h2><div class="concept-rail">{item.concepts.map((concept, index) => <div><span>{String(index + 1).padStart(2, "0")}</span><strong>{concept}</strong></div>)}</div></section>
       <section class="content-section"><h2>系統流程圖</h2><FlowDiagram items={item.flow} label={`${item.title}流程`} /></section>
       <section class="content-section"><h2>三堂課安排</h2><div class="agenda">{item.lessons.map((lesson, index) => <div class="agenda-row"><div class="agenda-title"><strong>第 {index + 1} 堂｜{classPeriods[index].time}</strong>{lesson.title}</div><div class="agenda-detail">{lesson.detail}<small>{lesson.minutes} 分鐘</small></div></div>)}</div></section>

@@ -1,0 +1,22 @@
+---
+import type { CourseVisual } from "../data/course";
+
+interface Props { visual: CourseVisual; steps: string[] }
+const { visual, steps } = Astro.props;
+---
+
+<figure class="learning-guide">
+  <div class="learning-guide-image">
+    <img src={visual.src} alt={visual.alt} width="1500" height="844" loading="lazy" />
+  </div>
+  <figcaption class="learning-guide-caption">
+    <div class="learning-guide-copy">
+      <span>圖像導讀</span>
+      <strong>{visual.title}</strong>
+      <p>{visual.caption}</p>
+    </div>
+    <ol class="learning-guide-steps" aria-label={`${visual.title}的五個步驟`}>
+      {steps.map((step) => <li><span>{step}</span></li>)}
+    </ol>
+  </figcaption>
+</figure>

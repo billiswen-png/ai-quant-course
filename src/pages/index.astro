@@ -4,6 +4,7 @@ import FlowDiagram from "../components/FlowDiagram.astro";
 import FinalPresentation from "../components/FinalPresentation.astro";
 import ClassSchedule from "../components/ClassSchedule.astro";
 import { courseWeeks, learningRhythm } from "../data/course";
+const visualWeeks = courseWeeks.filter((week) => week.visual);
 ---
 
 <BaseLayout title="AI × 量化交易｜師大研究所課程" active="home">
@@ -14,7 +15,7 @@ import { courseWeeks, learningRhythm } from "../data/course";
         <p class="hero-lead">七週實作教學完成 Paper Trading 原型；第八週依回饋修正後，進行正式成果發表。</p>
         <div class="hero-meta">
           <span><i class="meta-dot"></i>講師：温秉豐｜永豐期貨營業部 資深副理</span>
-          <span><i class="meta-dot"></i>主環境：VS Code＋本機 Jupyter｜不使用 Colab</span>
+          <span><i class="meta-dot"></i>主環境：VS Code＋本機 Jupyter</span>
           <span><i class="meta-dot"></i>每週 14:20–17:20｜3 堂課・每堂 50 分鐘</span>
         </div>
         <div class="hero-actions">
@@ -43,6 +44,22 @@ import { courseWeeks, learningRhythm } from "../data/course";
         ))}
       </div>
       <FinalPresentation compact />
+    </div>
+  </section>
+
+  <section class="section visual-index-section">
+    <div class="container">
+      <div class="section-split-heading">
+        <div><p class="page-kicker">先看路徑，再動手實作</p><h2 class="section-heading">四個關鍵轉折，串起整門課</h2><p class="section-intro">學生可以先用圖掌握輸入、檢查與輸出，再進到每週教材看精確步驟與驗收標準。</p></div>
+      </div>
+      <div class="visual-index">
+        {visualWeeks.map((item) => item.visual && (
+          <a class="visual-index-card" href={`/weeks/${item.slug}/`}>
+            <img src={item.visual.src} alt="" width="1500" height="844" loading="lazy" />
+            <div><span>第 {item.week} 週關鍵圖</span><strong>{item.visual.title}</strong><p>{item.visual.caption}</p><small>查看圖解與課程步驟 →</small></div>
+          </a>
+        ))}
+      </div>
     </div>
   </section>
 
