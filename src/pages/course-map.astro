@@ -1,0 +1,36 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { assessment, courseDays } from "../data/course";
+---
+
+<BaseLayout title="課程地圖｜AI 量化交易" active="map">
+  <header class="page-hero">
+    <div class="container">
+      <h1>課程地圖</h1>
+      <p>從市場問題出發，逐步完成資料、策略、驗證與成果發表。</p>
+    </div>
+  </header>
+  <section class="section">
+    <div class="container">
+      <div class="timeline">
+        {courseDays.map((item) => (
+          <article class="timeline-row">
+            <div class="timeline-title">
+              <a class="timeline-day" href={`/weeks/${item.slug}/`}>Day {item.day}</a>
+              <h2>{item.title}</h2>
+            </div>
+            <div class="lesson-list">
+              {item.lessons.map((lesson, index) => (
+                <div class="lesson-line"><span>第 {index + 1} 堂</span><p>{lesson.title}</p></div>
+              ))}
+            </div>
+          </article>
+        ))}
+      </div>
+      <div class="assessment-band" aria-label="學習成果評量">
+        <div class="assessment-title">學習成果</div>
+        {assessment.map((item) => <div class="assessment-item"><span>{item.label}</span><strong>{item.value}</strong></div>)}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
