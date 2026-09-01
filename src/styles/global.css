@@ -105,7 +105,10 @@ img, svg { display: block; max-width: 100%; }
 .section-intro { max-width: 740px; margin: 0 0 46px; color: var(--muted); font-size: 18px; }
 .learning-path { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-top: 1px solid var(--gold); }
 .path-step { position: relative; padding: 34px 30px 0 0; }
-.path-step:not(:last-child)::after { content: "→"; position: absolute; right: 18px; top: 47px; color: var(--gold); font-size: 25px; }
+.path-step:not(:last-child)::after {
+  content: ""; position: absolute; right: 20px; top: 54px; width: 28px; height: 9px;
+  border-top: 1.5px solid var(--gold); border-right: 1.5px solid var(--gold); transform: skewX(35deg);
+}
 .path-number { color: var(--gold); font: 700 29px/1 var(--serif); }
 .path-step h3 { margin: 18px 40px 8px 0; color: var(--navy); font-size: 20px; }
 .path-step p { margin: 0 36px 0 0; color: var(--muted); font-size: 15px; }
@@ -145,7 +148,8 @@ img, svg { display: block; max-width: 100%; }
 .week-link .day-label { color: var(--gold); font: 700 19px var(--serif); }
 .week-link h2 { margin: 0 0 4px; color: var(--navy); font-size: 21px; }
 .week-link p { margin: 0; color: var(--muted); font-size: 14px; }
-.arrow { color: var(--gold); font-size: 24px; }
+.arrow { display: grid; place-items: center; color: var(--gold); }
+.arrow-icon { display: block; flex: 0 0 auto; }
 
 .lesson-shell { width: min(1450px, 100%); margin: 0 auto; display: grid; grid-template-columns: 190px minmax(0, 1fr) 290px; min-height: 780px; }
 .day-rail { border-right: 1px solid var(--border); padding: 28px 0; }
@@ -229,7 +233,7 @@ img, svg { display: block; max-width: 100%; }
   .section { padding-block: 62px; }
   .learning-path { grid-template-columns: 1fr; }
   .path-step { padding: 25px 0; border-bottom: 1px solid var(--border); }
-  .path-step:not(:last-child)::after { content: "↓"; right: 8px; top: 30px; }
+  .path-step:not(:last-child)::after { right: 10px; top: 31px; width: 9px; height: 24px; transform: rotate(90deg) skewX(35deg); }
   .course-note-inner, .footer-grid, .prose-grid { grid-template-columns: 1fr; }
   .footer-note { text-align: left; }
   .timeline { padding-left: 36px; }
