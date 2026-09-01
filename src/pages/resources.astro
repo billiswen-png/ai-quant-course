@@ -1,0 +1,37 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="資源中心｜AI 量化交易" active="resources">
+  <header class="page-hero"><div class="container"><h1>資源中心</h1><p>上課前完成環境準備；課堂中以可重現、可檢核的方式保存程式與研究紀錄。</p></div></header>
+  <section class="section">
+    <div class="container prose-grid">
+      <div>
+        <section class="content-block">
+          <h2>課前環境準備</h2>
+          <table class="resource-table">
+            <tbody>
+              <tr><th>電腦環境</th><td>可安裝軟體的 Windows 或 macOS 筆電；建議預留足夠儲存空間。</td></tr>
+              <tr><th>Python</th><td>Python 3.11 以上版本，搭配專案虛擬環境。</td></tr>
+              <tr><th>程式工具</th><td>Visual Studio Code、Git 與本機 Jupyter Notebook；本課程不依賴 Colab。</td></tr>
+              <tr><th>版本管理</th><td>GitHub 帳號及小組共用 Repository，用來保存程式、說明與修改紀錄。</td></tr>
+              <tr><th>資料與 API</th><td>課堂提供示範資料與串接流程；任何金鑰不得提交到公開 Repository。</td></tr>
+            </tbody>
+          </table>
+        </section>
+        <section class="content-block" id="code">
+          <h2>程式範例使用原則</h2>
+          <ul>
+            <li>先執行原始版本並確認輸入與輸出。</li><li>每次只修改一個條件，保留變更紀錄。</li>
+            <li>AI 產生的程式必須檢查資料欄位、時間順序、例外處理與輸出合理性。</li><li>報告中清楚說明資料、假設、成本、限制與無法驗證之處。</li>
+          </ul>
+        </section>
+      </div>
+      <aside class="side-panel">
+        <h2>重要提醒</h2>
+        <p>課程的 API 與模擬交易內容用於教學。未經確認前，不要連接真實交易帳號或送出實際委託。</p>
+        <p>大型影片與受授權限制的教材，將透過課堂指定平台提供。</p>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>
