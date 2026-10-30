@@ -20,8 +20,8 @@ const weeks = [...courseWeeks.map(({week, title}) => ({week, title})), {week: 8,
   <noscript><p>請啟用 JavaScript，或使用上方連結到 GitHub 下載已發布講義。</p></noscript>
 </section>
 <script>
-  type Asset = {name: string; size: number; browser_download_url: string; state: string};
-  type Release = {tag_name: string; draft: boolean; prerelease: boolean; published_at: string; assets: Asset[]};
+  import { getHandoutFiles, type HandoutRelease } from "../data/handouts";
+  type Release = HandoutRelease & {tag_name: string; draft: boolean; prerelease: boolean; published_at: string};
   const status = document.querySelector<HTMLElement>("#handout-status");
   const cards = [...document.querySelectorAll<HTMLElement>(".handout[data-week]")];
   async function loadHandouts() {
@@ -39,7 +39,7 @@ const weeks = [...courseWeeks.map(({week, title}) => ({week, title})), {week: 8,
         const release = published.find(r => Number(r.tag_name.match(/^week-(\d+)/)?.[1]) === Number(card.dataset.week));
         const state = card.querySelector<HTMLElement>(".handout-state")!;
         const list = card.querySelector<HTMLUListElement>(".handout-files")!;
-        const assets = release?.assets.filter(asset => asset.state === "uploaded" && /\.pdf$/i.test(asset.name) && asset.browser_download_url.startsWith("https://github.com/billiswen-png/ai-quant-course/releases/download/")) || [];
+        const assets = release ? getHandoutFiles(release) : [];
         if (!release || !assets.length) {state.textContent = "尚未發布講義，請留意課堂公告。"; continue;}
         count++;
         const date = new Date(release.published_at).toLocaleDateString("zh-TW", {timeZone:"Asia/Taipei", year:"numeric",month:"2-digit",day:"2-digit"});
@@ -47,9 +47,10 @@ const weeks = [...courseWeeks.map(({week, title}) => ({week, title})), {week: 8,
         for (const asset of assets) {
           const li = document.createElement("li");
           const link = document.createElement("a");
-          link.href = asset.browser_download_url;
+          link.href = asset.url;
           link.className = "handout-download";
-          link.textContent = `下載 ${asset.name}（${(asset.size / 1000000).toFixed(1)} MB）`;
+          const size = asset.size === undefined ? "" : `（${(asset.size / 1000000).toFixed(1)} MB）`;
+          link.textContent = `下載 ${asset.name}${size}`;
           li.append(link); list.append(li);
         }
       }

@@ -40,6 +40,7 @@ npm run build
 2. 建立 tag，例如 `week-01-v1.0`，target 選 `main`。第 1～8 週分別使用 `week-01`～`week-08`。
 3. 填寫標題與版本說明，將 PDF 拖入附件區，等待上傳完成。
 4. Publish release，勿勾選 pre-release。草稿與測試版不會顯示於網站。
+   亦支援版本說明中的 GitHub PDF 附件 Markdown 連結（`https://github.com/user-attachments/files/.../*.pdf`）。此類連結不提供檔案大小；Assets 附件則會顯示大小。
 5. 到網站 `/resources/#downloads` 重新整理，確認檔名、大小與下載內容。既有網站會查詢最近 100 筆 Releases，不需要重新部署。
 
 修正版另建 `week-01-v1.1` 等 tag；同週採最近發布的正式 Release，該版本應包含完整 PDF 附件。請勿將只含說明、沒有 PDF 的版本當作最新正式講義。可保留歷史版本供追溯。
