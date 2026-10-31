@@ -155,15 +155,16 @@ export const courseWeeks: CourseWeek[] = [
 ];
 
 export const finalPresentation = {
-  week: 8, campusWeek: 16, title: "成果發表",
-  summary: "依第7週回饋完成修改、驗收與封版，進行正式成果發表。",
-  steps: ["完成必要修正", "程式與文件驗收", "8分鐘正式發表", "教師與同儕提問", "提交個人學習證據"],
-  lessons: [
-    { title: "最終版本檢查與展示準備", detail: "檔案驗收・設備測試", minutes: 50 },
-    { title: "小組正式成果發表", detail: "8分鐘簡報・系統展示・提問", minutes: 50 },
-    { title: "講師回饋、同儕回饋與課程收束", detail: "成果評議・個人反思", minutes: 50 }
-  ] as [Lesson, Lesson, Lesson],
-  deliverables: ["可重現 Notebook 或程式專案", "專案文件與執行說明", "策略與風險報告", "正式簡報", "個人貢獻與反思"]
+  week: 8, campusWeek: 16, title: "校方正式成果發表",
+  summary: "第7週完成課堂實作與研究檢查後，第8週參加校方安排的正式成果發表；發表題目與工具依主辦單位規範，不以完成 Python Paper Trading 為唯一形式。",
+  date: "2026/12/23（三）",
+  time: "14:30–16:00",
+  location: "永豐期貨總公司",
+  speakingTime: "每組約 5 分鐘",
+  topic: "與交易策略有關的研究皆可；活動簡報建議可選海外期貨、選擇權等商品。選擇權策略可使用 Excel 或其他適合的工具呈現。",
+  sourceNote: "依提供的「台師大課程活動規劃」簡報整理；活動日期、時間、順序與要求如有更新，以校方或主辦單位最後公告為準。",
+  steps: ["整理策略研究題目", "核對方法與證據", "依校方規範簡報", "全體講師回饋"],
+  deliverables: ["研究或策略成果", "資料與方法說明", "驗證結果及限制", "正式簡報", "個人學習證據"]
 };
 
 export const classPeriods = [

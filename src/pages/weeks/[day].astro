@@ -31,6 +31,17 @@ const next = courseWeeks.find((week) => week.week === item.week + 1);
       <ClassSchedule compact />
 
       <section class="content-section"><h2>這一週會完成什麼</h2><ul class="goal-list">{item.goals.map((goal) => <li>{goal}</li>)}</ul></section>
+      {item.week === 1 && <section class="content-section">
+        <h2>銜接前段課程：選一個可驗證的題目</h2>
+        <p>可從已介紹的期貨商品、選擇權、技術分析、籌碼與市場結構等主題擇一出發；不預設每位同學已有相同工具能力。先以紙上研究畫布寫出問題、資料需求與可能失敗的情況。</p>
+        <ul class="goal-list">
+          <li>技術分析與波段策略：把「突破」或「趨勢」改寫成可逐筆判斷的規則。</li>
+          <li>籌碼與市場結構：先核對資料何時公開，避免把事後公布的數字提前使用。</li>
+          <li>期貨與選擇權：比較契約、交易成本、損益結構及研究資料可用性。</li>
+          <li>總經市場分析：界定事件、公告時點、比較基準及可能干擾因素。</li>
+        </ul>
+        <p>本週只完成研究問題與系統地圖；不要求登入 API 或提交真實績效。第三週才進入教師示範的行情取得與資料驗證。</p>
+      </section>}
       {item.visual && <section class="content-section visual-guide-section"><h2>先看懂這一週的路徑</h2><LearningVisual visual={item.visual} steps={item.flow} /></section>}
       <section class="content-section"><h2>核心概念</h2><div class="concept-rail">{item.concepts.map((concept, index) => <div><span>{String(index + 1).padStart(2, "0")}</span><strong>{concept}</strong></div>)}</div></section>
       <section class="content-section"><h2>系統流程圖</h2><FlowDiagram items={item.flow} label={`${item.title}流程`} /></section>

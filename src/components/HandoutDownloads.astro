@@ -3,68 +3,130 @@ import { courseWeeks } from "../data/course";
 const weeks = [...courseWeeks.map(({week, title}) => ({week, title})), {week: 8, title: "正式成果發表"}];
 ---
 <section id="downloads" class="handouts" aria-labelledby="downloads-title">
-  <p class="page-kicker">課堂投影・課後複習</p>
-  <h2 id="downloads-title" class="section-heading">每週講義下載</h2>
-  <p>下載高畫質 PDF 後即可離線閱讀與投影。上課前請先下載，並確認版本與更新日期。</p>
-  <p id="handout-status" role="status" aria-live="polite">正在查詢已發布講義…</p>
+  <p class="page-kicker">依週次發布・GitHub 直接下載</p>
+  <h2 id="downloads-title" class="section-heading">每週教材下載</h2>
+  <p>教師依課程進度逐週發布教材。PDF 供閱讀或投影，ZIP 為學生實作資料；未上課的週次不會提前釋出。下載前請確認檔案版本。</p>
+  <div class="handout-toolbar">
+    <p id="handout-status" role="status" aria-live="polite">正在查詢已發布教材…</p>
+    <button id="handout-refresh" type="button" aria-label="重新檢查 GitHub 最新教材">重新查詢</button>
+  </div>
   <div class="handout-grid">
     {weeks.map(({week, title}) => (
       <article class="handout" data-week={week}>
         <span>第 {week} 週</span><h3>{title}</h3>
         <p class="handout-state">查詢中…</p>
-        <ul class="handout-files" aria-label={`第 ${week} 週講義檔案`}></ul>
+        <ul class="handout-files" aria-label={"第 " + week + " 週已發布的教材檔案"}></ul>
       </article>
     ))}
   </div>
-  <p><a class="text-link" href="https://github.com/billiswen-png/ai-quant-course/releases" target="_blank" rel="noopener noreferrer">前往 GitHub 查看所有版本 ↗</a></p>
-  <noscript><p>請啟用 JavaScript，或使用上方連結到 GitHub 下載已發布講義。</p></noscript>
+  <p class="handout-backup"><a class="text-link" href="https://github.com/billiswen-png/ai-quant-course/releases" target="_blank" rel="noopener noreferrer">GitHub Releases（備援下載） ↗</a></p>
+  <noscript><p>請啟用 JavaScript，或使用上方 GitHub Releases 連結取得已發布教材。</p></noscript>
 </section>
 <script>
-  import { getHandoutFiles, type HandoutRelease } from "../data/handouts";
-  type Release = HandoutRelease & {tag_name: string; draft: boolean; prerelease: boolean; published_at: string};
+  import { getWeekHandouts, type HandoutRelease } from "../data/handouts";
+
+  const API = "https://api.github.com/repos/billiswen-png/ai-quant-course/releases?per_page=100";
+  const CACHE_KEY = "ntnu-course-published-releases-v2";
+  const CACHE_MS = 5 * 60 * 1000;
+  type Cache = {savedAt: number; releases: HandoutRelease[]};
+
   const status = document.querySelector<HTMLElement>("#handout-status");
   const cards = [...document.querySelectorAll<HTMLElement>(".handout[data-week]")];
-  async function loadHandouts() {
+  const refresh = document.querySelector<HTMLButtonElement>("#handout-refresh");
+
+  function getCache(): Cache | null {
+    try {
+      const raw = sessionStorage.getItem(CACHE_KEY);
+      if (!raw) return null;
+      const data = JSON.parse(raw) as Cache;
+      return Number.isFinite(data.savedAt) && Array.isArray(data.releases) ? data : null;
+    } catch {
+      return null;
+    }
+  }
+
+  function saveCache(releases: HandoutRelease[]) {
+    try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({savedAt: Date.now(), releases})); }
+    catch { /* Storage may be unavailable; direct GitHub lookup still works. */ }
+  }
+
+  function render(releases: HandoutRelease[], fromCache = false) {
+    let publishedWeeks = 0;
+    for (const card of cards) {
+      const week = Number(card.dataset.week);
+      const files = getWeekHandouts(releases, week);
+      const state = card.querySelector<HTMLElement>(".handout-state")!;
+      const list = card.querySelector<HTMLUListElement>(".handout-files")!;
+      list.replaceChildren();
+      if (!files.length) {
+        state.textContent = "尚未發布，請依課程進度留意公告。";
+        continue;
+      }
+      publishedWeeks++;
+      state.textContent = "已提供 " + files.length + " 份教材；版本以各檔案標示為準。";
+      for (const file of files) {
+        const li = document.createElement("li");
+        const link = document.createElement("a");
+        link.href = file.url;
+        link.className = "handout-download";
+        const size = file.size === undefined ? "" : "（" + (file.size / 1000000).toFixed(1) + " MB）";
+        link.textContent = "下載 " + file.format + "｜" + file.name + size;
+        const meta = document.createElement("small");
+        const date = new Date(file.publishedAt).toLocaleDateString("zh-TW", {timeZone:"Asia/Taipei", year:"numeric", month:"2-digit", day:"2-digit"});
+        meta.textContent = file.releaseTag + "｜發布 " + date;
+        li.append(link, meta);
+        list.append(li);
+      }
+    }
+    if (status) {
+      status.textContent = (publishedWeeks
+        ? "目前有 " + publishedWeeks + " 週教材可下載。"
+        : "教材依週次陸續發布，目前尚無正式教材。")
+        + (fromCache ? " 目前顯示上次查詢結果，若需最新資訊請前往 GitHub Releases。" : "");
+    }
+  }
+
+  async function loadHandouts(force = false) {
+    const cached = getCache();
+    if (!force && cached && Date.now() - cached.savedAt < CACHE_MS) {
+      render(cached.releases);
+      return;
+    }
+    if (refresh) refresh.disabled = true;
+    if (status) status.textContent = "正在確認 GitHub 已發布教材…";
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 12000);
     try {
-      const response = await fetch("https://api.github.com/repos/billiswen-png/ai-quant-course/releases?per_page=100", {signal: controller.signal, credentials: "omit"});
-      if (!response.ok) throw new Error("Release lookup failed");
-      const releases: Release[] = await response.json();
-      if (!Array.isArray(releases)) throw new Error("Invalid release list");
-      const published = releases.filter(r => !r.draft && !r.prerelease && /^week-0?[1-8]-v\d+(?:\.\d+)*$/.test(r.tag_name))
-        .sort((a,b) => Date.parse(b.published_at) - Date.parse(a.published_at));
-      let count = 0;
-      for (const card of cards) {
-        const release = published.find(r => Number(r.tag_name.match(/^week-(\d+)/)?.[1]) === Number(card.dataset.week));
-        const state = card.querySelector<HTMLElement>(".handout-state")!;
-        const list = card.querySelector<HTMLUListElement>(".handout-files")!;
-        const assets = release ? getHandoutFiles(release) : [];
-        if (!release || !assets.length) {state.textContent = "尚未發布講義，請留意課堂公告。"; continue;}
-        count++;
-        const date = new Date(release.published_at).toLocaleDateString("zh-TW", {timeZone:"Asia/Taipei", year:"numeric",month:"2-digit",day:"2-digit"});
-        state.textContent = `${release.tag_name}｜發布日期 ${date}`;
-        for (const asset of assets) {
-          const li = document.createElement("li");
-          const link = document.createElement("a");
-          link.href = asset.url;
-          link.className = "handout-download";
-          const size = asset.size === undefined ? "" : `（${(asset.size / 1000000).toFixed(1)} MB）`;
-          link.textContent = `下載 ${asset.name}${size}`;
-          li.append(link); list.append(li);
+      const response = await fetch(API, {signal: controller.signal, credentials: "omit"});
+      if (!response.ok) throw new Error("GitHub Releases lookup failed");
+      const releases: unknown = await response.json();
+      if (!Array.isArray(releases)) throw new Error("Unexpected GitHub Releases response");
+      saveCache(releases as HandoutRelease[]);
+      render(releases as HandoutRelease[]);
+    } catch {
+      if (cached) render(cached.releases, true);
+      else {
+        if (status) status.textContent = "暫時無法查詢 GitHub（可能是網路或 API 限制），請使用下方備援連結。";
+        for (const card of cards) {
+          card.querySelector<HTMLElement>(".handout-state")!.textContent = "查詢失敗，請前往 GitHub 確認。";
+          card.querySelector<HTMLUListElement>(".handout-files")!.replaceChildren();
         }
       }
-      if (status) status.textContent = count ? `已有 ${count} 週講義可下載，以下顯示最近發布的正式版本。` : "講義將依課程進度陸續發布，目前尚無可下載的正式講義。";
-    } catch {
-      if (status) status.textContent = "暫時無法查詢講義（可能是網路或 GitHub 請求限制），請使用下方 GitHub 連結查看。";
-      for (const card of cards) card.querySelector<HTMLElement>(".handout-state")!.textContent = "狀態暫時無法取得，請到 GitHub 確認。";
-    } finally {clearTimeout(timeout);}
+    } finally {
+      clearTimeout(timeout);
+      if (refresh) refresh.disabled = false;
+    }
   }
-  loadHandouts();
+
+  refresh?.addEventListener("click", () => { void loadHandouts(true); });
+  void loadHandouts();
 </script>
 <style>
   .handouts { padding-block: 12px 30px; }
-  #handout-status { padding: 16px 20px; border-left: 3px solid var(--gold); background: var(--ivory-deep); }
+  .handout-toolbar { display: flex; align-items: stretch; gap: 10px; margin: 14px 0 20px; }
+  #handout-status { flex: 1; margin: 0; padding: 14px 18px; border-left: 3px solid var(--gold); background: var(--ivory-deep); }
+  #handout-refresh { flex: 0 0 auto; padding: 12px 18px; border: 1px solid var(--gold); background: var(--white); color: var(--navy); cursor: pointer; font-weight: 800; }
+  #handout-refresh:disabled { opacity: .5; cursor: progress; }
   .handout-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); border-top: 1px solid var(--gold-soft); }
   .handout { min-width: 0; padding: 24px; border-bottom: 1px solid var(--gold-soft); }
   .handout:nth-child(odd) { border-right: 1px solid var(--gold-soft); }
@@ -72,7 +134,14 @@ const weeks = [...courseWeeks.map(({week, title}) => ({week, title})), {week: 8,
   .handout h3 { color: var(--navy); font-size: 21px; line-height: 1.5; margin: 8px 0; }
   .handout-state { color: var(--muted); font-size: 14px; }
   .handout-files { list-style: none; padding: 0; margin: 0; }
-  .handout-download { display: block; padding: 12px 16px; margin-top: 10px; color: var(--white); background: var(--navy); border-bottom: 3px solid var(--gold); overflow-wrap: anywhere; font-weight: 700; }
+  .handout-files small { display: block; color: var(--muted); margin: 4px 0 12px; font-size: 12px; }
+  .handout-download { display: block; padding: 12px 16px; color: var(--white); background: var(--navy); border-bottom: 3px solid var(--gold); overflow-wrap: anywhere; font-weight: 700; }
   .handout-download:hover { background: var(--navy-2); }
-  @media(max-width:760px) {.handout-grid { grid-template-columns: 1fr; } .handout:nth-child(odd) { border-right: 0; } .handout { padding: 22px 8px; }}
+  .handout-backup { margin-top: 24px; }
+  @media(max-width:760px) {
+    .handout-grid { grid-template-columns: 1fr; }
+    .handout:nth-child(odd) { border-right: 0; }
+    .handout { padding: 22px 8px; }
+    .handout-toolbar { flex-direction: column; }
+  }
 </style>
