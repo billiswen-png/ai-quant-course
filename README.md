@@ -14,8 +14,9 @@ npm run dev
 ## 品質檢查
 
 ```bash
-npm run check
-npm run build
+npm test        # Node.js 22.18+：教材發布邏輯回歸測試
+npm run check   # Astro/TypeScript 檢查
+npm run build   # Cloudflare Pages 靜態網站建置
 ```
 
 ## Cloudflare Pages
@@ -32,20 +33,19 @@ npm run build
 
 ## 教學資料原則
 
-### 發布每週 PDF 講義
+### 依課程進度逐週發布學生教材（PDF／ZIP）
 
-大型 PDF 請上傳 GitHub Releases 附件，勿放入 `public` 或 Git 歷史。公開附件可供任何人下載，不適合機密或限修課學生教材。
+教材上傳 GitHub Releases，學員從課程網站的資源中心下載；大型 PDF 與學生練習 ZIP 不放進 `public` 或 Git 歷史。只有已公開發布且檔案符合類型的版本才會顯示；未來週次不需提前發布。GitHub 公開附件任何人都能下載，教師答案、API 金鑰、學生個資或受授權限制資料不得放入公開 Release。
 
-1. 到本專案 Releases → Draft a new release。
-2. 建立 tag，例如 `week-01-v1.0`，target 選 `main`。第 1～8 週分別使用 `week-01`～`week-08`。
-3. 填寫標題與版本說明，將 PDF 拖入附件區，等待上傳完成。
-4. Publish release，勿勾選 pre-release。草稿與測試版不會顯示於網站。
-   亦支援版本說明中的 GitHub PDF 附件 Markdown 連結（`https://github.com/user-attachments/files/.../*.pdf`）。此類連結不提供檔案大小；Assets 附件則會顯示大小。
-5. 到網站 `/resources/#downloads` 重新整理，確認檔名、大小與下載內容。既有網站會查詢最近 100 筆 Releases，不需要重新部署。
+1. 到本專案 Releases → Draft a new release（先存草稿，勿先公開）。
+2. 建立 tag，例如 `week-02-v1.0`，target 選 `main`。第 1～8 週使用 `week-01`～`week-08`；僅在該週準備發布時操作。
+3. 先檢查附件內容與權限，再上傳學生版 PDF（例如 `W02_學生講義.pdf`）及選用的學生版 ZIP（例如 `W02_學生實作.zip`）。不得包含教師版、完成解答、私有歷史行情、API 憑證、帳戶或個資。
+4. 確認附件已完整上傳後 Publish release，勿勾選 pre-release。Draft／pre-release 不在資源中心列出。亦支援版本說明中的 GitHub `user-attachments` PDF／ZIP 連結，但沒有附件檔案大小。
+5. 到網站 `/resources/#downloads` 點選「重新查詢」，確認顯示該週的 PDF／ZIP、版本與實際下載內容；必要時以另一台裝置測試。無須為單純新增附件重新部署網站。
 
-修正版另建 `week-01-v1.1` 等 tag；同週採最近發布的正式 Release，該版本應包含完整 PDF 附件。請勿將只含說明、沒有 PDF 的版本當作最新正式講義。可保留歷史版本供追溯。
+修正教材請建立新 tag（例如 `week-02-v1.1`），不要覆蓋已發布的原始證據。網站分別選取同一週最新版的 PDF 與 ZIP；若新 Release 只有 ZIP，舊版有效 PDF 仍可下載，畫面會標示各自的版本。空白附件不會遮蔽已發布教材。
 
-瀏覽器使用無憑證的 GitHub 公開 API，遇請求額度或網路問題會顯示前往 Releases 的備援連結。講義檔案從 GitHub 下載，不經 Cloudflare Pages，因此不占其單檔資產額度。
+瀏覽器使用 GitHub 公開 API；同一分頁會暫存查詢結果 5 分鐘，避免每次重新整理都消耗請求額度。想立即檢查新教材可按「重新查詢」。API 無法連線時使用前次結果或 GitHub Releases 備援連結；檔案由 GitHub 提供，不占 Cloudflare Pages 單檔資產配額。
 
 - 網站不收集學生姓名、學號、作業或成績。
 - API 金鑰、帳號與敏感設定不得提交到 Repository。
