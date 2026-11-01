@@ -26,6 +26,14 @@ export type WeeklyHandoutFile = HandoutFile & {
   publishedAt: string;
 };
 
+/** Display small downloadable ZIP assets in KB instead of misleading '0.0 MB'. */
+export function formatHandoutSize(size: number | undefined): string {
+  if (typeof size !== "number" || !Number.isFinite(size) || size < 0) return "";
+  if (size < 1000) return "（" + Math.round(size) + " B）";
+  if (size < 1000000) return "（" + (size / 1000).toFixed(1) + " KB）";
+  return "（" + (size / 1000000).toFixed(1) + " MB）";
+}
+
 const releasePath = "/billiswen-png/ai-quant-course/releases/download/";
 const privateMaterial = /教師|解答|答案|標準解|teacher|solution|answer|private|internal/i;
 
