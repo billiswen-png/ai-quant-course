@@ -23,7 +23,7 @@ const weeks = [...courseWeeks.map(({week, title}) => ({week, title})), {week: 8,
   <noscript><p>請啟用 JavaScript，或使用上方 GitHub Releases 連結取得已發布教材。</p></noscript>
 </section>
 <script>
-  import { getWeekHandouts, type HandoutRelease } from "../data/handouts";
+  import { getWeekHandouts, formatHandoutSize, type HandoutRelease } from "../data/handouts";
 
   const API = "https://api.github.com/repos/billiswen-png/ai-quant-course/releases?per_page=100";
   const CACHE_KEY = "ntnu-course-published-releases-v2";
@@ -69,7 +69,7 @@ const weeks = [...courseWeeks.map(({week, title}) => ({week, title})), {week: 8,
         const link = document.createElement("a");
         link.href = file.url;
         link.className = "handout-download";
-        const size = file.size === undefined ? "" : "（" + (file.size / 1000000).toFixed(1) + " MB）";
+        const size = formatHandoutSize(file.size);
         link.textContent = "下載 " + file.format + "｜" + file.name + size;
         const meta = document.createElement("small");
         const date = new Date(file.publishedAt).toLocaleDateString("zh-TW", {timeZone:"Asia/Taipei", year:"numeric", month:"2-digit", day:"2-digit"});
