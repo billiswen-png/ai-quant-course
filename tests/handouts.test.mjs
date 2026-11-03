@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { getHandoutFiles, getWeekHandouts } from "../src/data/handouts.ts";
+import { getHandoutFiles, getWeekHandouts, formatHandoutSize } from "../src/data/handouts.ts";
 
 const origin = "https://github.com/billiswen-png/ai-quant-course/releases/download/";
 
@@ -115,4 +115,16 @@ test("newer PDF replaces older PDF but keeps one latest ZIP", () => {
   assert.deepEqual(files.map(f => [f.name, f.releaseTag]), [
     ["W06_new.pdf", "week-06-v1.1"], ["W06_學生.zip", "week-06-v1.0"]
   ]);
+});
+
+
+test("small ZIP sizes show KB instead of 0.0 MB, PDFs remain in MB", () => {
+  assert.equal(formatHandoutSize(undefined), "");
+  assert.equal(formatHandoutSize(-1), "");
+  assert.equal(formatHandoutSize(Number.NaN), "");
+  assert.equal(formatHandoutSize(0), "（0 B）");
+  assert.equal(formatHandoutSize(999), "（999 B）");
+  assert.equal(formatHandoutSize(18324), "（18.3 KB）");
+  assert.equal(formatHandoutSize(16124744), "（16.1 MB）");
+  assert.equal(formatHandoutSize(44818483), "（44.8 MB）");
 });
