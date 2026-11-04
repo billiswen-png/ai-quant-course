@@ -1,4 +1,5 @@
-export type HandoutFormat = "PDF" | "ZIP";
+const handoutFormats = ["PDF", "PPTX", "PPT", "PNG", "JPEG", "WEBP", "GIF", "AVIF", "BMP", "TIFF", "HEIC", "HEIF", "ZIP"] as const;
+export type HandoutFormat = typeof handoutFormats[number];
 
 export type HandoutRelease = {
   tag_name: string;
@@ -31,6 +32,17 @@ const privateMaterial = /教師|解答|答案|標準解|teacher|solution|answer|
 
 function formatOf(filename: string): HandoutFormat | null {
   if (/\.pdf$/i.test(filename)) return "PDF";
+  if (/\.pptx$/i.test(filename)) return "PPTX";
+  if (/\.ppt$/i.test(filename)) return "PPT";
+  if (/\.png$/i.test(filename)) return "PNG";
+  if (/\.jpe?g$/i.test(filename)) return "JPEG";
+  if (/\.webp$/i.test(filename)) return "WEBP";
+  if (/\.gif$/i.test(filename)) return "GIF";
+  if (/\.avif$/i.test(filename)) return "AVIF";
+  if (/\.bmp$/i.test(filename)) return "BMP";
+  if (/\.tiff?$/i.test(filename)) return "TIFF";
+  if (/\.heic$/i.test(filename)) return "HEIC";
+  if (/\.heif$/i.test(filename)) return "HEIF";
   if (/\.zip$/i.test(filename)) return "ZIP";
   return null;
 }
@@ -53,7 +65,8 @@ function safeUrl(rawUrl: string, releaseAsset: boolean): URL | null {
 }
 
 // The public download area must not automatically expose teacher-only files.
-// Only PDF and ZIP assets on approved GitHub paths are eligible.
+// Only allowlisted documents and raster images on approved GitHub paths are eligible.
+// SVG, HTML, executables and macro-enabled presentations are intentionally excluded.
 export function getHandoutFiles(release: Pick<HandoutRelease, "assets" | "body">): HandoutFile[] {
   const files: HandoutFile[] = [];
   const usedUrls = new Set<string>();
@@ -79,8 +92,8 @@ export function getHandoutFiles(release: Pick<HandoutRelease, "assets" | "body">
   return files;
 }
 
-// Choose the newest published attachment *per format*. A later ZIP-only release
-// does not make the earlier PDF disappear, and an empty release is ignored.
+// Choose the newest published attachments per format. A new presentation or image
+// does not hide the existing PDF, and an empty release is ignored.
 export function getWeekHandouts(releases: HandoutRelease[], week: number): WeeklyHandoutFile[] {
   if (!Array.isArray(releases) || !Number.isInteger(week) || week < 1 || week > 8) return [];
   const matches = releases.filter(release => {
@@ -91,14 +104,14 @@ export function getWeekHandouts(releases: HandoutRelease[], week: number): Weekl
 
   const chosen = new Map<HandoutFormat, WeeklyHandoutFile[]>();
   for (const release of matches) {
-    for (const format of ["PDF", "ZIP"] as const) {
+    for (const format of handoutFormats) {
       if (chosen.has(format)) continue;
       const files = getHandoutFiles(release).filter(file => file.format === format);
       if (files.length) {
         chosen.set(format, files.map(file => ({...file, releaseTag: release.tag_name, publishedAt: release.published_at})));
       }
     }
-    if (chosen.size === 2) break;
+    if (chosen.size === handoutFormats.length) break;
   }
-  return [...(chosen.get("PDF") || []), ...(chosen.get("ZIP") || [])];
+  return handoutFormats.flatMap(format => chosen.get(format) || []);
 }

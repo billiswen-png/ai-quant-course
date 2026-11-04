@@ -5,7 +5,7 @@ const weeks = [...courseWeeks.map(({week, title}) => ({week, title})), {week: 8,
 <section id="downloads" class="handouts" aria-labelledby="downloads-title">
   <p class="page-kicker">依週次發布・GitHub 直接下載</p>
   <h2 id="downloads-title" class="section-heading">每週教材下載</h2>
-  <p>教師依課程進度逐週發布教材。PDF 供閱讀或投影，ZIP 為學生實作資料；未上課的週次不會提前釋出。下載前請確認檔案版本。</p>
+  <p>教師依課程進度逐週發布教材。PDF 供閱讀，PPTX／PPT 為投影簡報，圖片供圖解複習，ZIP 為學生實作資料。請下載至電腦後開啟；簡報動畫與互動效果需使用相容的 PowerPoint 播放。下載前請確認檔案版本。</p>
   <div class="handout-toolbar">
     <p id="handout-status" role="status" aria-live="polite">正在查詢已發布教材…</p>
     <button id="handout-refresh" type="button" aria-label="重新檢查 GitHub 最新教材">重新查詢</button>
@@ -25,7 +25,7 @@ const weeks = [...courseWeeks.map(({week, title}) => ({week, title})), {week: 8,
   import { getWeekHandouts, type HandoutRelease } from "../data/handouts";
 
   const API = "https://api.github.com/repos/billiswen-png/ai-quant-course/releases?per_page=100";
-  const CACHE_KEY = "ntnu-course-published-releases-v2";
+  const CACHE_KEY = "ntnu-course-published-releases-v3";
   const CACHE_MS = 5 * 60 * 1000;
   type Cache = {savedAt: number; releases: HandoutRelease[]};
 
