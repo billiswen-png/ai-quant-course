@@ -22,10 +22,10 @@ const weeks = [...courseWeeks.map(({week, title}) => ({week, title})), {week: 8,
   <noscript><p>請啟用 JavaScript 後重新整理頁面，即可查詢已發布教材。</p></noscript>
 </section>
 <script>
-  import { getWeekHandouts, type HandoutRelease } from "../data/handouts";
+  import { getWeekHandouts, getHandoutTimestamp, type HandoutRelease } from "../data/handouts";
 
   const API = "https://api.github.com/repos/billiswen-png/ai-quant-course/releases?per_page=100";
-  const CACHE_KEY = "ntnu-course-published-releases-v3";
+  const CACHE_KEY = "ntnu-course-published-releases-v4";
   const CACHE_MS = 5 * 60 * 1000;
   type Cache = {savedAt: number; releases: HandoutRelease[]};
 
@@ -71,8 +71,9 @@ const weeks = [...courseWeeks.map(({week, title}) => ({week, title})), {week: 8,
         const size = file.size === undefined ? "" : "（" + (file.size / 1000000).toFixed(1) + " MB）";
         link.textContent = "下載 " + file.format + "｜" + file.name + size;
         const meta = document.createElement("small");
-        const date = new Date(file.publishedAt).toLocaleDateString("zh-TW", {timeZone:"Asia/Taipei", year:"numeric", month:"2-digit", day:"2-digit"});
-        meta.textContent = file.releaseTag + "｜發布 " + date;
+        const timestamp = getHandoutTimestamp(file);
+        const date = new Date(timestamp.value).toLocaleString("zh-TW", {timeZone:"Asia/Taipei", year:"numeric", month:"2-digit", day:"2-digit", hour:"2-digit", minute:"2-digit", hourCycle:"h23"});
+        meta.textContent = file.releaseTag + "｜" + timestamp.label + " " + date + "（台灣時間）";
         li.append(link, meta);
         list.append(li);
       }

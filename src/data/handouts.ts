@@ -12,6 +12,8 @@ export type HandoutRelease = {
     size: number;
     browser_download_url: string;
     state: string;
+    created_at?: string;
+    updated_at?: string;
   }>;
 };
 
@@ -20,12 +22,20 @@ export type HandoutFile = {
   url: string;
   size?: number;
   format: HandoutFormat;
+  uploadedAt?: string;
+  updatedAt?: string;
 };
 
 export type WeeklyHandoutFile = HandoutFile & {
   releaseTag: string;
   publishedAt: string;
 };
+
+export function getHandoutTimestamp(file: WeeklyHandoutFile): {value: string; label: string} {
+  if (file.updatedAt && Number.isFinite(Date.parse(file.updatedAt))) return {value: file.updatedAt, label: "檔案更新"};
+  if (file.uploadedAt && Number.isFinite(Date.parse(file.uploadedAt))) return {value: file.uploadedAt, label: "檔案上傳"};
+  return {value: file.publishedAt, label: "版本發布（未提供檔案時間）"};
+}
 
 const releasePath = "/billiswen-png/ai-quant-course/releases/download/";
 const privateMaterial = /教師|解答|答案|標準解|teacher|solution|answer|private|internal/i;
@@ -77,6 +87,8 @@ export function getHandoutFiles(release: Pick<HandoutRelease, "assets" | "body">
     const url = safeUrl(asset.browser_download_url, true);
     if (!format || !url || privateMaterial.test(decodedPath(url.pathname)) || usedUrls.has(url.href)) continue;
     files.push({name: asset.name, url: url.href, format,
+      ...(typeof asset.created_at === "string" && Number.isFinite(Date.parse(asset.created_at)) ? {uploadedAt: asset.created_at} : {}),
+      ...(typeof asset.updated_at === "string" && Number.isFinite(Date.parse(asset.updated_at)) ? {updatedAt: asset.updated_at} : {}),
       ...(Number.isFinite(asset.size) && asset.size >= 0 ? {size: asset.size} : {})});
     usedUrls.add(url.href);
   }

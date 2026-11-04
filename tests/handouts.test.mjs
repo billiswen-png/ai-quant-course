@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { getHandoutFiles, getWeekHandouts } from "../src/data/handouts.ts";
+import { getHandoutFiles, getWeekHandouts, getHandoutTimestamp } from "../src/data/handouts.ts";
 
 const asset = (name) => ({name, size: 100, state: "uploaded", browser_download_url: "https://github.com/billiswen-png/ai-quant-course/releases/download/week-01-v1.0/" + encodeURIComponent(name)});
 const release = (names, date = "2026-11-04T00:58:22Z") => ({tag_name: "week-01-v1.0", draft: false, prerelease: false, published_at: date, assets: names.map(asset)});
@@ -21,4 +21,26 @@ test("teacher-only, active files, drafts and untrusted hosts stay excluded", () 
 test("GitHub description attachments accept presentation and image links", () => {
   const files = getHandoutFiles({assets: [], body: "[slides](https://github.com/user-attachments/files/123/slides.pptx)\n[figure](https://github.com/user-attachments/files/124/figure.png)"});
   assert.deepEqual(files.map(x => x.format), ["PPTX", "PNG"]);
+});
+
+test("each file keeps its own timestamps rather than the release date", () => {
+  const data = release([]);
+  data.published_at = "2026-10-30T15:03:42Z";
+  data.assets = [
+    {...asset("W01_.pdf"), created_at:"2026-10-30T16:23:20Z", updated_at:"2026-10-30T16:24:19Z"},
+    {...asset("W01T.pptx"), created_at:"2026-11-04T00:58:08Z", updated_at:"2026-11-04T00:58:19Z"}
+  ];
+  const files = getWeekHandouts([data], 1);
+  assert.equal(getHandoutTimestamp(files[0]).value, "2026-10-30T16:24:19Z");
+  assert.equal(getHandoutTimestamp(files[1]).value, "2026-11-04T00:58:19Z");
+  assert.equal(getHandoutTimestamp(files[1]).label, "檔案更新");
+  const format = value => new Date(value).toLocaleString("zh-TW", {timeZone:"Asia/Taipei",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hourCycle:"h23"});
+  assert.equal(format(getHandoutTimestamp(files[0]).value).replace(/\s+/gu, " "), "2026/10/31 00:24");
+  assert.equal(format(getHandoutTimestamp(files[1]).value).replace(/\s+/gu, " "), "2026/11/04 08:58");
+});
+test("missing or invalid asset timestamps fall back with an accurate label", () => {
+  const file = getWeekHandouts([release(["test.png"])],1)[0];
+  assert.equal(getHandoutTimestamp(file).label, "版本發布（未提供檔案時間）");
+  assert.equal(getHandoutTimestamp({...file, updatedAt:"invalid", uploadedAt:"2026-11-04T00:58:08Z"}).label, "檔案上傳");
+  assert.equal(getHandoutTimestamp({...file, updatedAt:"invalid", uploadedAt:"invalid"}).value, file.publishedAt);
 });
