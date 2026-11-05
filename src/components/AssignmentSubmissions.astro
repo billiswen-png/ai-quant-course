@@ -9,10 +9,10 @@ const slots = Array.from({length: 8}, (_, index) => {
     week,
     title: week === 7 ? "課內驗收" : week === 8 ? "正式成果" : "課程作業",
     items: week === 8
-      ? [{code: prefix + "-G", label: "小組正式成果", limit: 50, formats: "PDF／PPTX／ZIP"}]
+      ? [{code: prefix + "-G", label: "小組正式成果", limit: 100, formats: "格式不限"}]
       : [
-          {code: prefix + "-I", label: "個人作業", limit: 20, formats: "PDF"},
-          {code: prefix + "-G", label: week === 7 ? "小組原型與驗證" : "小組作業", limit: 50, formats: "PDF／PPTX／ZIP"},
+          {code: prefix + "-I", label: "個人作業", limit: 100, formats: "格式不限"},
+          {code: prefix + "-G", label: week === 7 ? "小組原型與驗證" : "小組作業", limit: 100, formats: "格式不限"},
         ],
   };
 });
@@ -33,8 +33,8 @@ function getSubmission(code: string) {
   <h2 id="submissions-title" class="section-heading">作業繳交</h2>
   <p>第 1–7 週依公告分開繳交個人與小組作業；第 8 週正式成果另行繳交，不覆蓋第 7 週原型。</p>
   <ul class="submission-rules">
-    <li>個人：每人一個 PDF，單檔不超過 20 MB；如當週表單上限較低，以表單標示為準。</li>
-    <li>小組：全班 6 組，每組由代表繳交一個 PDF、PPTX 或 ZIP，單檔不超過 50 MB。</li>
+    <li>個人每人一份；全班 6 組，小組作業由每組一位代表繳交。</li>
+    <li>每次繳交一個檔案，格式不限，單檔上限 100 MB；多個檔案請打包成一個 ZIP，無須轉成 PDF。</li>
     <li>表單開放後，請用事先登記的 Google 帳號登入。送出後確認成功畫面；補交依授課公告，不自行覆蓋舊版。</li>
     <li>程式與壓縮檔請先移除 API 金鑰、憑證、帳戶資料和真實交易日誌。</li>
   </ul>
