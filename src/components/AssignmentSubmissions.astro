@@ -4,12 +4,12 @@ type Submission = { url: string; deadline: string; fileLimitMB: number };
 const submissions: Partial<Record<string, Submission>> = {
   "W01-I": {
     url: "https://docs.google.com/forms/d/e/1FAIpQLSd1DjuKXGz5nPpNYgSuWWrQAaVY9ONN51kWAIcamrcEji8Seg/viewform",
-    deadline: "2026-11-10T15:00:00+08:00",
+    deadline: "2026-11-15T15:00:00+08:00",
     fileLimitMB: 100,
   },
   "W01-G": {
     url: "https://docs.google.com/forms/d/e/1FAIpQLSctCOx8vxUYpVedYPOJPVk0Ba61R7BVOaqsLFJ6oaLI3klSmg/viewform",
-    deadline: "2026-11-10T15:00:00+08:00",
+    deadline: "2026-11-15T15:00:00+08:00",
     fileLimitMB: 100,
   },
 };
@@ -26,7 +26,7 @@ const slots = Array.from({length: 8}, (_, index) => {
           {code: prefix + "-G", label: week === 7 ? "小組原型與驗證" : "小組作業", limit: 100, formats: "格式不限"},
         ],
   };
-});
+}).filter(({week}) => week !== 2);
 const dateFormat = new Intl.DateTimeFormat("zh-TW", {
   timeZone: "Asia/Taipei", year: "numeric", month: "2-digit", day: "2-digit",
   hour: "2-digit", minute: "2-digit", hourCycle: "h23",
@@ -42,7 +42,8 @@ function getSubmission(code: string) {
 <section class="submissions" id="submissions" aria-labelledby="submissions-title">
   <p class="page-kicker">個人實作・分組成果</p>
   <h2 id="submissions-title" class="section-heading">作業繳交</h2>
-  <p>第 1–7 週依公告分開繳交個人與小組作業；第 8 週正式成果另行繳交，不覆蓋第 7 週原型。</p>
+  <p>第 1、3–7 週依公告分開繳交個人與小組作業；第 2 週不需繳交。第 8 週正式成果另行繳交，不覆蓋第 7 週原型。</p>
+  <p class="submission-note">第 1 週個人與小組作業已延長至 2026/11/15（日）15:00（台灣時間），尚未繳交的同學可使用原繳交入口；已繳交者不必重交。</p>
   <ul class="submission-rules">
     <li>個人每人一份，填寫自己的姓名與學號；小組由每組一位代表填寫自己的姓名、學號，並選擇第 1–6 組。</li>
     <li>每次繳交一個檔案，格式不限，單檔上限 100 MB；多個檔案請打包成一個 ZIP，無須轉成 PDF。</li>
