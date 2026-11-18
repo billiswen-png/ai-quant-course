@@ -1,4 +1,4 @@
-const handoutFormats = ["PDF", "PPTX", "PPT", "PNG", "JPEG", "WEBP", "GIF", "AVIF", "BMP", "TIFF", "HEIC", "HEIF", "ZIP"] as const;
+const handoutFormats = ["PDF", "PPTX", "PPT", "PNG", "JPEG", "WEBP", "GIF", "AVIF", "BMP", "TIFF", "HEIC", "HEIF", "ZIP", "RAR"] as const;
 export type HandoutFormat = typeof handoutFormats[number];
 
 export type HandoutRelease = {
@@ -54,6 +54,7 @@ function formatOf(filename: string): HandoutFormat | null {
   if (/\.heic$/i.test(filename)) return "HEIC";
   if (/\.heif$/i.test(filename)) return "HEIF";
   if (/\.zip$/i.test(filename)) return "ZIP";
+  if (/\.rar$/i.test(filename)) return "RAR";
   return null;
 }
 
